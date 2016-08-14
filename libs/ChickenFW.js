@@ -1,106 +1,101 @@
-/*
- * mix.js
- */
- (function () {
-     "use strict";
+// Built: 2016-08-14T15:10:18.461Z
+// Commit: b7b0957aac6236c2e6736c5df675d28ba286eeb7
 
-     var mixIntoObj = function mixIntoObj(dst, src) {
-         for (var key in src) {
-             if (src.hasOwnProperty(key)) {
-                 dst[key] = src[key];
-             }
-         }
-     };
-
-     window.Chicken = window.Chicken || {};
-
-     // Mix all subsequent objects into the object specified in the first argument
-     window.Chicken.mix = function mix() {
-         var target = arguments[0];
-
-         for (var  i = 1; i < arguments.length; i++) {
-             var component = arguments[i];
-             mixIntoObj(target, component);
-         }
-     },
-
-     // Construct a new object which is a combination of all the specified object
-     window.Chicken.combine = function combine() {
-         var obj = {};
-
-         for (var i = 0; i < arguments.length; i++) {
-             mixIntoObj(obj, arguments[i]);
-         }
-
-         return obj;
-     };
-
- })();
-
- /*
-  * namespace.js
-  */
+// File: js/mix.js
 (function () {
-  "use strict";
+    "use strict";
 
-  var namespace = function namespace(path, content, parent) {
-      var name;
-      var names = path.split(".");
-      parent =  parent || window;
+    var mixIntoObj = function mixIntoObj(dst, src) {
+        for (var key in src) {
+            if (src.hasOwnProperty(key)) {
+                dst[key] = src[key];
+            }
+        }
+    };
 
-      // Navigate/create the object tree
-      while (names.length > 1) {
-          name = names.shift();
-          parent = parent[name] = parent[name] || {};
-      }
+    window.Chicken = window.Chicken || {};
 
-      if (typeof content === "object") {
-          // Mix into the parent
-          name = names[0];
-          parent = parent[name] = parent[name] || {};
+    // Mix all subsequent objects into the object specified in the first argument
+    window.Chicken.mix = function mix() {
+        var target = arguments[0];
 
-          Chicken.mix(parent, content);
-      }
-      else {
-          // Set the parent directly
-          parent[names[0]] = content;
-      }
-  };
+        for (var  i = 1; i < arguments.length; i++) {
+            var component = arguments[i];
+            mixIntoObj(target, component);
+        }
+    },
 
-  // Export the the namespace function using itself
-  namespace("Chicken.namespace", namespace);
+    // Construct a new object which is a combination of all the specified object
+    window.Chicken.combine = function combine() {
+        var obj = {};
+
+        for (var i = 0; i < arguments.length; i++) {
+            mixIntoObj(obj, arguments[i]);
+        }
+
+        return obj;
+    };
+
 })();
 
-/*
-* class.js
-*/
+// File: js/namespace.js
 (function () {
-   "use strict";
+    "use strict";
 
-   var Class = function Class(constructor, memberFuncs, properties, statics) {
-       memberFuncs && Chicken.mix(constructor.prototype, memberFuncs);
-       properties  && Object.defineProperties(constructor.prototype, properties);
-       statics     && Chicken.mix(constructor, statics);
+    var namespace = function namespace(path, content, parent) {
+        var name;
+        var names = path.split(".");
+        parent =  parent || window;
 
-       return constructor;
-   };
+        // Navigate/create the object tree
+        while (names.length > 1) {
+            name = names.shift();
+            parent = parent[name] = parent[name] || {};
+        }
 
-   var registerClass = function registerClass(namespacePath, constructor, memberFuncs, properties, statics) {
-       var c = Chicken.Class(constructor, memberFuncs, properties, statics);
-       Chicken.namespace(namespacePath, c);
-       return c;
-   };
+        if (typeof content === "object") {
+            // Mix into the parent
+            name = names[0];
+            parent = parent[name] = parent[name] || {};
 
-   // Export
-   Chicken.namespace("Chicken", {
-       Class: Class,
-       registerClass: registerClass
-   });
+            Chicken.mix(parent, content);
+        }
+        else {
+            // Set the parent directly
+            parent[names[0]] = content;
+        }
+    };
+
+    // Export the the namespace function using itself
+    namespace("Chicken.namespace", namespace);
 })();
 
-/*
- * inject.js
- */
+// File: js/class.js
+(function () {
+    "use strict";
+
+    var Class = function Class(constructor, memberFuncs, properties, statics) {
+        memberFuncs && Chicken.mix(constructor.prototype, memberFuncs);
+        properties  && Object.defineProperties(constructor.prototype, properties);
+        statics     && Chicken.mix(constructor, statics);
+
+        return constructor;
+    };
+
+    var registerClass = function registerClass(namespacePath, constructor, memberFuncs, properties, statics) {
+        var c = Chicken.Class(constructor, memberFuncs, properties, statics);
+        Chicken.namespace(namespacePath, c);
+        return c;
+    };
+
+    // Export
+    Chicken.namespace("Chicken", {
+        Class: Class,
+        registerClass: registerClass
+    });
+})();
+
+// File: js/inject.js
 (function () {
 	"use strict";
 
@@ -177,7 +172,7 @@
 
 	};
 
- // Format a required by list nicely for debugging
+    // Format a required by list nicely for debugging
 	function _formatRequiredBy(requiredBy) {
 
 	    var msg = "";
@@ -221,11 +216,11 @@
 		},
 
 		// Immediately inject the specified dependencies into the provided initor
-		// No return value is expected from the initor
+		// No return value is needed from the initor
 		inject: function Chicken_inject(dependencies, initor) {
 
 			_validateDependenciesVsInitor("Chicken.inject()", dependencies, initor);
-			this._initItem(dependencies, initor, [], null);
+			return this._initItem(dependencies, initor, [], null);
 
 		},
 
@@ -344,3 +339,31 @@
 	Chicken.namespace("Chicken", Inject);
 
 })();
+
+
+// File: js/worker.js
+(Chicken.inject(["Worker"], function (Worker) {
+
+	var workerFuncs = {
+
+		startWorker: function Chicken_startWorker(main, onmessage, onerror) {
+
+			var workerURL = URL.createObjectURL(new Blob(["(", main.toString(), ")(this);"], { type: "application/javascript" }));
+
+			var worker = new Worker(workerURL);
+			worker.onmessage = onmessage || null;
+			worker.onerror = onerror || null;
+
+			URL.revokeObjectURL(workerURL);
+
+			return worker;
+
+		},
+
+	};
+
+
+	Chicken.namespace("Chicken", workerFuncs);
+
+}));
+
