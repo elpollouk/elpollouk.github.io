@@ -55,7 +55,14 @@
 				throw new Error(message);
 			}
 		},
-		
+
+		isUndefined: function isUndefined(value, message) {
+			if (typeof value !== "undefined") {
+				message = _buildMessage("Assert isUndefined failed", message);
+				throw new Error(message);
+			}
+		},
+
 		isNullOrUndefined: function isNullOrUndefined(value, message) {
 			if ((value !== null) && (typeof value !== "undefined")) {
 				message = _buildMessage("Assert isNullOrUndefined failed", message);
@@ -64,8 +71,15 @@
 		},
 
 		isNotNull: function isNotNull(value, message) {
-			if (value == null) {
+			if (value === null) {
 				message = _buildMessage("Assert isNotNull failed", message);
+				throw new Error(message);
+			}
+		},
+
+		isNotUndefined: function isUndefined(value, message) {
+			if (typeof value === "undefined") {
+				message = _buildMessage("Assert isNotUndefined failed", message);
 				throw new Error(message);
 			}
 		},
@@ -101,7 +115,7 @@
 
 	// Assert Aliases
 	Assert.areEqual = Assert.isEqual;
-	
+
 	// General utility functions
 	var Test = {
 		// Add a test entry to the output
@@ -459,7 +473,7 @@
 		if (typeof originalFunc !== "function") throw new Error("Unable to replace " + funcName + " as it is not a function");
 
 		obj[funcName] = mockFunc;
-		
+
 		var mock = {
 			originalFunc: originalFunc,
 			calls: [],
