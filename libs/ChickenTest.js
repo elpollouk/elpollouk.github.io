@@ -84,6 +84,13 @@
 			}
 		},
 
+		isNotNullOrUndefined: function isNullOrUndefined(value, message) {
+			if ((value === null) || (typeof value === "undefined")) {
+				message = _buildMessage("Assert isNotNullOrUndefined failed, value was " + (typeof value == "undefined" ? "undefined" : "null"), message);
+				throw new Error(message);
+			}
+		},
+
 		fail: function fail(message) {
 			throw new Error(_buildMessage("Failed", message));
 		},
