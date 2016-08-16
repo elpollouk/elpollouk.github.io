@@ -226,6 +226,25 @@
 			return mock;
 		},
 
+		mockFunction: function mockFunction(returnValue) {
+			var mock;
+			if (typeof returnValue == "function") {
+				mock = function () {
+					mock.calls.push(arguments);
+					return returnValue.apply(returnValue, arguments);
+				}
+			}
+			else {
+				mock = function () {
+					mock.calls.push(arguments);
+					return returnValue;
+				}
+			}
+
+			mock.calls = [];
+			return mock;
+		},
+
 		// Spy on a function on an object
 		// Returns an object that contains the logged function calls
 		// .reset() on returned object restores the original function
