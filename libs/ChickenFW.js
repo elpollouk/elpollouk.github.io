@@ -1,5 +1,7 @@
-// Built: 2016-08-14T15:10:18.461Z
-// Commit: b7b0957aac6236c2e6736c5df675d28ba286eeb7
+// ChickenFW
+// Version: 1.0.0
+// Built: 2016-08-16T19:23:18.010Z
+// Commit: 338b3d766516493eb81a6f7a96b3d03358e49ecf
 
 // File: js/mix.js
 (function () {
