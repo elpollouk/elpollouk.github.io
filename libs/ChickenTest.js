@@ -91,6 +91,13 @@
 			}
 		},
 
+		isInRange: function (minExpected, maxExpected, actual, message) {
+			if ((actual < minExpected) || (maxExpected < actual)) {
+				message = _buildMessage("Value " + actual + " outside of range " + minExpected + " - " + maxExpected, message);
+				throw new Error(message);
+			}
+		},
+
 		fail: function fail(message) {
 			throw new Error(_buildMessage("Failed", message));
 		},
@@ -226,19 +233,24 @@
 			return mock;
 		},
 
+		// Return a simple function object than can be used to monitor calls to it
+		// This can be used to monitor correct callback and event behaviour
+		// Returns can be a single value, an array of values or a function yielding return values
 		mockFunction: function mockFunction(returnValue) {
-			var mock;
-			if (typeof returnValue == "function") {
-				mock = function () {
-					mock.calls.push(arguments);
-					return returnValue.apply(returnValue, arguments);
+			var mock = function () {
+				mock.calls.push(arguments);
+
+				if (typeof returnValue == "function") {
+					return returnValue.apply(mock, arguments);
 				}
-			}
-			else {
-				mock = function () {
-					mock.calls.push(arguments);
-					return returnValue;
+				else if (Array.isArray(returnValue)) {
+					if (returnValue.length != 1) {
+						return returnValue.shift();
+					}
+					return returnValue[0];
 				}
+
+				return returnValue;
 			}
 
 			mock.calls = [];
@@ -269,25 +281,6 @@
 			mock = _applyMock(obj, funcName, spyFunc);
 
 			return mock;
-		},
-
-		// Return a simple function object than can be used to monitor calls to it
-		// This can be used to monitor correct callback and event behaviour
-		// Returns can be a single value or an array of values
-		monitor: function monitor(returns) {
-			var monitorFunc = function () {
-				monitorFunc.calls.push(arguments);
-
-				if (Array.isArray(returns)) {
-					if (returns.length != 1) {
-						return returns.shift();
-					}
-					return returns[0];
-				}
-				return returns;
-			};
-			monitorFunc.calls = [];
-			return monitorFunc;
 		},
 	};
 
