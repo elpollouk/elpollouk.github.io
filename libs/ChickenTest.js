@@ -525,9 +525,20 @@
 		};
 	}
 
+	function _resolveOrCreateElement(id) {
+		var el = document.getElementById(id);
+		if (!el) {
+			el = document.createElement("div");
+			el.id = id;
+			document.body.appendChild(el);
+		}
+		return el;
+	}
+
 	window.onload = function () {
 		// Build the progress display
-		document.getElementById("progress").innerHTML = "<b><span id='total'>Total = 0</span>, <span id='passed'>Passed = 0</span>, <span id='failed'>Failed = 0</span></b> <button id='togglePassed'>Hide Passed</button>";
+		_resolveOrCreateElement("progress").innerHTML = "<b><span id='total'>Total = 0</span>, <span id='passed'>Passed = 0</span>, <span id='failed'>Failed = 0</span></b> <button id='togglePassed'>Hide Passed</button>";
+		_resolveOrCreateElement("output");
 		document.getElementById("passed").style.color = "green";
 		document.getElementById("failed").style.color = "red";
 		document.getElementById("togglePassed").onclick = function () {
