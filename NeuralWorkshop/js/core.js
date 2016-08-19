@@ -93,7 +93,7 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater) {
         generationAge = 0;
     }, 11);
 
-    function drawFrame(fps) {
+    function drawFrame(fps, warpFactor) {
         draw.clear();
         draw.circle(target.pos.x, target.pos.y, 20, "rgb(0, 255, 0)");
         draw.circle(target.pos.x, target.pos.y, 20, "black", true);
@@ -105,6 +105,7 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater) {
         draw.text(`FPS = ${Math.floor(fps)}`, 0, 0);
         draw.text(`Generation ${generation}`, 0, 10);
         draw.text(`Generation Age = ${Math.floor(generationAge)}`, 0, 20);
+        draw.text(`Warp Factor = ${warpFactor}`, 0, 30);
     }
 
     function update(dt) {

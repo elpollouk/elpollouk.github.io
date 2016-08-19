@@ -2,11 +2,26 @@ Chicken.inject(["ChickenVis.UpdateLoop", "ChickenVis.FixedDeltaUpdater", "Core"]
 function (UpdateLoop, FdUpdater, Core) {
     "use strict";
 
+    var autoWarp = false;
+    var warpFactor = 1;
+
     var fixedUpdater = new FdUpdater(Core.onUpdate, 0.010);
 
     var updater = new UpdateLoop(function (dt) {
-        fixedUpdater.update(dt * Number.parseInt(warp.value));
-        Core.onFrame(updater.fps);
+        if (autoWarp) {
+            if (dt >= 1)
+                warpFactor -= 10;
+            else {
+                warpFactor++;
+            }
+        }
+        else
+        {
+            warpFactor = Number.parseInt(warp.value);
+        }
+
+        fixedUpdater.update(dt * warpFactor);
+        Core.onFrame(updater.fps, warpFactor);
     });
 
     window.onload = function () {
@@ -23,5 +38,9 @@ function (UpdateLoop, FdUpdater, Core) {
 
     window.updateToggle = function () {
         updater.paused = !updater.paused;
+    }
+
+    window.toggleAutoWarp = function () {
+        autoWarp = !autoWarp;
     }
 });
