@@ -1,0 +1,7 @@
+#viewer {
+    width: 800px;
+    height: 600px;
+    border: black 1px solid;
+    box-sizing: content-box;
+    background-color: lightgray;
+}
