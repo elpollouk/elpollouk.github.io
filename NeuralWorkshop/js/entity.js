@@ -23,6 +23,7 @@ Chicken.register("Entity", ["ChickenVis.Math"], function (Math) {
         this.dRotation = 0;
         this.pos = Math.vector2(400, 300);
         this.velocity = Math.vector2(0, 0);
+        this.distanceCovered = 0;
         this.colour = "rgb(127, 127, 255)";
         this.signalSteer = null;
         this.signalGo = null;
@@ -65,6 +66,8 @@ Chicken.register("Entity", ["ChickenVis.Math"], function (Math) {
             Math.add2(this.velocity, dV);
             Math.scale2(this.velocity, DRAG);
             Math.add2(this.pos, this.velocity);
+
+            this.distanceCovered += Math.lengthSqrd2(this.velocity);
 
             // World bounding
             //if (this.pos.x < 20) this.pos.x = 20;

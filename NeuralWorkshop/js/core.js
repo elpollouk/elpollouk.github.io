@@ -3,9 +3,13 @@ Chicken.register("Core",
 function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater, Graph) {
     "use strict";
 
+    var TARGET_SIZE = 20;
+
     var loader = new Loader();
-    var graph = new Graph(5, 45, 150);
+    var graph = new Graph(5, 50, 150);
     var draw;
+
+    var world = {};
 
     var assets = [
         {
@@ -38,9 +42,11 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater, Graph) {
     }
 
     function calcEntityScore(entity) {
-        //var v = Math.subAndClone2(target.pos, entity.pos);
-        //return Math.lengthSqrd2(v);
-        return entity.score;
+        var score = entity.score;
+        if (entity.distanceCovered < 10) {
+            score = Number.MAX_VALUE;
+        }
+        return score;
     }
 
     function nextGeneration() {
@@ -82,26 +88,26 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater, Graph) {
 
         // Mutate the generation
         // Very mutated
-        entities[0].neuralNet.mutate(0.3, 0.2);
+        entities[0].neuralNet.mutate(0.8, 0.8);
         entities[0].colour = "red";
-        entities[1].neuralNet.mutate(0.25, 0.2);
+        entities[1].neuralNet.mutate(0.8, 0.8);
         entities[1].colour = "red";
         // Quite mutated
-        entities[2].neuralNet.mutate(0.15, 0.15);
+        entities[2].neuralNet.mutate(0.4, 0.4);
         entities[2].colour = "orange";
-        entities[3].neuralNet.mutate(0.15, 0.15);
+        entities[3].neuralNet.mutate(0.4, 0.4);
         entities[3].colour = "orange";
         // Moderately mutated
-        entities[4].neuralNet.mutate(0.10, 0.1);
+        entities[4].neuralNet.mutate(0.2, 0.2);
         entities[4].colour = "yellow";
-        entities[5].neuralNet.mutate(0.10, 0.1);
+        entities[5].neuralNet.mutate(0.2, 0.2);
         entities[5].colour = "yellow";
         // Slightly mutated
-        entities[6].neuralNet.mutate(0.02, 0.02);
+        entities[6].neuralNet.mutate(0.1, 0.1);
         entities[6].colour = "rgb(127, 255, 127)";
-        entities[7].neuralNet.mutate(0.02, 0.02);
+        entities[7].neuralNet.mutate(0.1, 0.1);
         entities[7].colour = "rgb(127, 255, 127)";
-        entities[8].neuralNet.mutate(0.02, 0.02);
+        entities[8].neuralNet.mutate(0.1, 0.1);
         entities[8].colour = "rgb(127, 255, 127)";
         // Last entity is unmodified from last generation
 
@@ -113,21 +119,21 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater, Graph) {
         nextGeneration();
         initTarget();
         generationAge = 0;
-    }, 5);
+    }, 30);
 
     function drawFrame(fps, warpFactor) {
         draw.clear();
-        draw.circle(target.pos.x, target.pos.y, 20, "rgb(0, 255, 0)");
-        draw.circle(target.pos.x, target.pos.y, 20, "black", true);
+        draw.circle(target.pos.x, target.pos.y, TARGET_SIZE, "rgb(0, 255, 0)");
+        draw.circle(target.pos.x, target.pos.y, TARGET_SIZE, "black", true);
 
         for (var entity of entities) {
             entity.render(draw);
         }
 
-        draw.text(`FPS = ${Math.floor(fps)}`, 0, 0);
-        draw.text(`Generation ${generation}`, 0, 10);
-        draw.text(`Generation Age = ${Math.floor(generationAge)}`, 0, 20);
-        draw.text(`Warp Factor = ${warpFactor}`, 0, 30);
+        draw.text(`FPS = ${Math.floor(fps)}`, 5, 5);
+        draw.text(`Generation ${generation}`, 5, 15);
+        draw.text(`Generation Age = ${Math.floor(generationAge)}`, 5, 25);
+        draw.text(`Warp Factor = ${warpFactor}`, 5, 35);
 
         graph.render(draw, stats);
     }
@@ -135,11 +141,11 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater, Graph) {
     function update(dt) {
         Math.scaleAdd2(target.pos, target.velocity, dt);
 
-        if (target.pos.x < 20) target.velocity.x *= -1;
-        else if (target.pos.x > 780) target.velocity.x *= -1;
+        if (target.pos.x < TARGET_SIZE) target.velocity.x *= -1;
+        else if (target.pos.x > world.width - TARGET_SIZE) target.velocity.x *= -1;
 
-        if (target.pos.y < 20) target.velocity.y *= -1;
-        else if (target.pos.y > 580) target.velocity.y *= -1;
+        if (target.pos.y < TARGET_SIZE) target.velocity.y *= -1;
+        else if (target.pos.y > world.height - TARGET_SIZE) target.velocity.y *= -1;
 
         for (var entity of entities) {
             entity.think();
@@ -151,7 +157,7 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater, Graph) {
     }
 
     function initTarget() {
-        target.pos = Math.vector2(Math.randomRange(20, 780), Math.randomRange(20, 580));
+        target.pos = Math.vector2(Math.randomRange(TARGET_SIZE, world.width - TARGET_SIZE), Math.randomRange(TARGET_SIZE, world.height - TARGET_SIZE));
         target.velocity = Math.vector2(Math.randomRange(-1, 1), Math.randomRange(-1, 1));
         //target.velocity = Math.vector2(0, 0);
         Math.normalise2(target.velocity);
@@ -161,8 +167,8 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater, Graph) {
     var Core = {
         init: function Core_init(onComplete) {
             draw = new Draw(viewer, 800, 600);
+            Core.onResize();
 
-            initTarget();
             constructEntities();
 
             loader.queue(assets, function () {
@@ -170,6 +176,18 @@ function (Loader, Draw, Math, entityBuilder, FixedDeltaUpdater, Graph) {
                     onComplete(loader.failed.length === 0);
                 }
             });
+        },
+
+        onResize: function () {
+            var width = viewer.clientWidth;
+            var height = viewer.clientHeight;
+            console.log(`Resizing world to ${width}x${height}`);
+
+            draw.resize(width, height);
+            world.width = width;
+            world.height = height;
+
+            initTarget();
         },
 
         onFrame: drawFrame,

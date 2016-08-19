@@ -40,6 +40,10 @@ function (UpdateLoop, FdUpdater, Core) {
         updater.paused = !updater.paused;
     }
 
+    window.onresize = function () {
+        Core.onResize();
+    }
+
     window.toggleAutoWarp = function () {
         autoWarp = !autoWarp;
     }

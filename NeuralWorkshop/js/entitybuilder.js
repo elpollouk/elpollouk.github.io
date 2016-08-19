@@ -23,7 +23,7 @@ function (SignalPolar, SignalTarget, SignalWrapped, NeuralNet, Entity, Math) {
             for (var  i = 0; i < LAYER1; i++) {
                 var neuron = net.neurons[i];
                 neuron.inputs[0].signal = targeter.signals[2];
-                //neuron.inputs[1].signal = targeter.signals[0];
+                //neuron.inputs[1].signal = targeter.signals[3];
                 //neuron.inputs[2].signal = targeter.signals[1];
                 //neuron.inputs[2].signal = signalRotation;
                 //neuron.inputs[2].signal = signalPosX;
@@ -37,7 +37,7 @@ function (SignalPolar, SignalTarget, SignalWrapped, NeuralNet, Entity, Math) {
             for (var  i = 0; i < LAYER1; i++) {
                 var neuron = net.neurons[i];
                 neuron.addInput(targeter.signals[2]);
-                //neuron.addInput(targeter.signals[0]);
+                //neuron.addInput(targeter.signals[3]);
                 //neuron.addInput(targeter.signals[1]);
                 //neuron.addInput(signalRotation);
                 //neuron.addInput(signalPosX);
