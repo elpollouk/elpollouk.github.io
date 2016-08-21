@@ -1,10 +1,27 @@
 Chicken.register("Neuron", ["ChickenVis.Math"], function (Math) {
     var undefined;
 
+    var sigmoidTable = []
+    for (var v = -5; v < 5.01; v += 0.01)
+        sigmoidTable.push(1 / (1 + Math.exp(-v)));
+
+    var sigmoidFact = sigmoidTable.length / 10;
+
+    function qsigmoid(value) {
+        if (value < -5) return 1;
+        if (value >= 5) return 0;
+
+        var v = (value + 5);
+        v = Math.floor(v * sigmoidFact);
+        v = sigmoidTable[v];
+
+        return v;
+    }
+
     var Neuron = Chicken.Class(function (maxValue, minValue, threshold) {
         this.value = 0;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+        this.minValue = minValue || 0;
+        this.maxValue = maxValue || 1;
         this.threshold = threshold;
         this.inputs = [];
     }, {
@@ -22,12 +39,17 @@ Chicken.register("Neuron", ["ChickenVis.Math"], function (Math) {
                 value += i.signal.value * i.weight;
             }
 
-            if (this.maxValue !== undefined && this.maxValue < value)
+            /*if (this.maxValue !== undefined && this.maxValue < value)
                 value = this.maxValue;
             else if (this.threshold !== undefined && value < this.threshold)
                 value = 0;
             else if (this.minValue !== undefined && value < this.minValue)
-                value = this.minValue;
+                value = this.minValue;*/
+
+            value = qsigmoid(value);
+            //value = 1 / (1 + Math.exp(-value));
+            value *= this.maxValue - this.minValue;
+            value += this.minValue;
 
             this.value = value;
         },

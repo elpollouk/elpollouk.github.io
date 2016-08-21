@@ -2,10 +2,10 @@ Chicken.register("EntityBuilder",
 ["Signal.Polar", "Signal.Target", "Signal.Cluster", "Signal.Wrapped", "NeuralNet", "Entity", "ChickenVis.Math"],
 function (SignalPolar, SignalTarget, SignalCluster, SignalWrapped, NeuralNet, Entity, Math) {
 
-    var LAYER1 = 4;
+    var LAYER1 = 3;
     var LAYER2 = 3;
     var LAYER3 = 2;
-    var SIGNAL_BIAS = { value: 0 };
+    var SIGNAL_BIAS = { value: 1 };
 
     return function EntityBuilder(world, target, neuralNetData) {
         var targeter = new SignalTarget(target);
@@ -34,9 +34,8 @@ function (SignalPolar, SignalTarget, SignalCluster, SignalWrapped, NeuralNet, En
             }
         }
         else {
-            // Brand new netwrk so we need to attach signals from scratch
+            // Brand new network so we need to attach signals from scratch
             net = new NeuralNet(LAYER1, LAYER3);
-            net.randomInit();
             for (var  i = 0; i < LAYER1; i++) {
                 var neuron = net.neurons[i];
                 neuron.addInput(SIGNAL_BIAS);
@@ -45,6 +44,7 @@ function (SignalPolar, SignalTarget, SignalCluster, SignalWrapped, NeuralNet, En
                 for (var j = 0; j < rangeCluster.signals.length; j++)
                     neuron.addInput(rangeCluster.signals[i]);
             }
+            net.randomInit();
 
             // Set output signal limits
             net.signals[0].threshold = undefined;
