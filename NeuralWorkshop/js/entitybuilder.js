@@ -1,16 +1,20 @@
 Chicken.register("EntityBuilder",
-["Signal.Polar", "Signal.Target", "Signal.Wrapped", "NeuralNet", "Entity", "ChickenVis.Math"],
-function (SignalPolar, SignalTarget, SignalWrapped, NeuralNet, Entity, Math) {
+["Signal.Polar", "Signal.Target", "Signal.Cluster", "Signal.Wrapped", "NeuralNet", "Entity", "ChickenVis.Math"],
+function (SignalPolar, SignalTarget, SignalCluster, SignalWrapped, NeuralNet, Entity, Math) {
 
-    var LAYER1 = 3;
+    var LAYER1 = 4;
     var LAYER2 = 3;
     var LAYER3 = 2;
+    var SIGNAL_BIAS = { value: 0 };
 
-    return function EntityBuilder(target, neuralNetData) {
+    return function EntityBuilder(world, target, neuralNetData) {
         var targeter = new SignalTarget(target);
+        var rangeCluster = new SignalCluster(targeter.signals[3], 0, 300, 10);
         var ent = new Entity();
+        ent.pos.x = world.width / 2;
+        ent.pos.y = world.height / 2;
         ent.attach(targeter);
-        //ent.rotation = Math.randomRange(0, Math.TWO_PI);
+        ent.attach(rangeCluster);
 
         var signalPosX = new SignalWrapped(() => ent.pos.x);
         var signalPosY = new SignalWrapped(() => ent.pos.y);
@@ -22,26 +26,24 @@ function (SignalPolar, SignalTarget, SignalWrapped, NeuralNet, Entity, Math) {
             net = new NeuralNet(neuralNetData);
             for (var  i = 0; i < LAYER1; i++) {
                 var neuron = net.neurons[i];
-                neuron.inputs[0].signal = targeter.signals[2];
-                //neuron.inputs[1].signal = targeter.signals[3];
-                //neuron.inputs[2].signal = targeter.signals[1];
-                //neuron.inputs[2].signal = signalRotation;
-                //neuron.inputs[2].signal = signalPosX;
-                //neuron.inputs[3].signal = signalPosY;
+                neuron.inputs[0].signal = SIGNAL_BIAS;
+                neuron.inputs[1].signal = targeter.signals[2];
+
+                for (var j = 0; j < rangeCluster.signals.length; j++)
+                    neuron.inputs[2 + j].signal = rangeCluster.signals[j];
             }
         }
         else {
             // Brand new netwrk so we need to attach signals from scratch
-            net = new NeuralNet(LAYER1, LAYER2, LAYER3);
+            net = new NeuralNet(LAYER1, LAYER3);
             net.randomInit();
             for (var  i = 0; i < LAYER1; i++) {
                 var neuron = net.neurons[i];
+                neuron.addInput(SIGNAL_BIAS);
                 neuron.addInput(targeter.signals[2]);
-                //neuron.addInput(targeter.signals[3]);
-                //neuron.addInput(targeter.signals[1]);
-                //neuron.addInput(signalRotation);
-                //neuron.addInput(signalPosX);
-                //neuron.addInput(signalPosY);
+
+                for (var j = 0; j < rangeCluster.signals.length; j++)
+                    neuron.addInput(rangeCluster.signals[i]);
             }
 
             // Set output signal limits
@@ -61,10 +63,19 @@ function (SignalPolar, SignalTarget, SignalWrapped, NeuralNet, Entity, Math) {
         // Punch in the AI
         ent.think = function Entity_think() {
             net.think();
-            ent.score += targeter.signals[3].value;
+            var distance = targeter.signals[3].value;
+            if (distance <= 20)
+                ent.score += 50;
+            else if (distance < ent._lastDistance)
+                ent.score += 1;
+            else
+                ent.score -= 2;
+
+            ent._lastDistance = distance;
         }
         ent.neuralNet = net;
         ent.score = 0;
+        ent._lastDistance = targeter.signals[3].value;
 
         return ent;
     };

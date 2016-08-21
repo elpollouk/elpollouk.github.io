@@ -10,7 +10,7 @@ function (UpdateLoop, FdUpdater, Core) {
     var updater = new UpdateLoop(function (dt) {
         if (autoWarp) {
             if (dt >= 1)
-                warpFactor -= 10;
+                warpFactor -= 5;
             else {
                 warpFactor++;
             }

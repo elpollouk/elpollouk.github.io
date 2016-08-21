@@ -21,7 +21,7 @@ Chicken.register("Entity", ["ChickenVis.Math"], function (Math) {
     var Entity = Chicken.Class(function () {
         this.rotation = Math.PI;
         this.dRotation = 0;
-        this.pos = Math.vector2(400, 300);
+        this.pos = Math.vector2(0, 0);
         this.velocity = Math.vector2(0, 0);
         this.distanceCovered = 0;
         this.colour = "rgb(127, 127, 255)";
