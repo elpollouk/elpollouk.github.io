@@ -175,8 +175,13 @@
 		// Write to the test output
 		log: function log(text, color) {
 			var div = document.createElement("div");
-			div.innerHTML = Test.htmlEscape(text);
-			div.style.color = color || "black";
+			if (text instanceof HTMLElement) {
+				div.appendChild(text);
+			}
+			else {
+				div.innerHTML = Test.htmlEscape(text);
+				div.style.color = color || "black";
+			}
 			var target = _logDiv || document.getElementById("output");
 			target.appendChild(div);
 		},
