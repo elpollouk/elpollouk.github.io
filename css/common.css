@@ -1,0 +1,29 @@
+body {
+    color: rgb(69, 85, 106);
+    background-color: #FAFAF7;
+    font-family: sans-serif;
+}
+
+h1 {
+    margin-bottom: 4px;
+    font-style: italic;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-style: italic;
+}
+
+p {
+    margin-top: 4px;
+}
+
+a {
+    color: #03389E;
+}
+
+.project {
+    margin: 3px;
+    padding: 3px;
+}
