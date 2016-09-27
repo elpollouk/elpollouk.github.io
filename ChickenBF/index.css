@@ -1,0 +1,9 @@
+#progInput {
+	display: block;
+	width: 100%;
+}
+
+#progOutput {
+	font-family: monospace;
+	white-space: pre;
+}

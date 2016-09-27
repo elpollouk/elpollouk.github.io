@@ -1,11 +1,43 @@
 <html>
     <head>
-        <script src="scripts/main.js"></script>
+        <title>Adrian O'Grady</title>
+        <link rel="stylesheet" href="/css/common.css" />
     </head>
-    <body onload="main()">
+    <body>
         <h1>Hello World</h1>
-        <p id="today"></p>
-        <img src="images/scrawl.png" /></br>
-        <button id="clicker" onclick="clickButton()">0</button>
+        <div>My name is Adrian O'Grady and one day I'll make this page pretty. In the mean time, here are a few things I've been working on for fun.</div>
+        <div>
+            <h2><a href="https://github.com/elpollouk/ChickenTest">Chicken Test</a></h2>
+            <p>A testing framework I cobbled together to try a few different JavaScript techniques. I now use it for all my personal JavaScript projects.</p>
+        </div>
+        <div>
+            <h2><a href="https://github.com/elpollouk/ChickenFW">Chicken Framework</a></h2>
+            <p>Core utilities for defining class and namespace in JavaScript. Also provides a basic dependency injection framework so that I can better modularise and test my code.</p>
+        </div>
+        <div>
+            <h2><a href="https://github.com/elpollouk/ChickenVis">Chicken Visualisation</a></h2>
+            <p>My own rendering library. In addtion to drawing tools, it manages frame and tick updates as well as providing an asset loader and an extended maths library.</p>
+        </div>
+        <div>
+            <h2><a href="https://github.com/elpollouk/NeuralWorkshop">Neural Workshop</a></h2>
+            <p>An ongoing experimental neural network playground. I'm currently using this to play around with neural networks again in the hope of creating some interesting AI for a future game. This has been built on ChickenFW and ChickenVis.</p>
+            <p>You can see a version of it running <a href="NeuralWorkshop/index.html">here</a>.</p>
+        </div>
+        <div>
+            <h2><a href="littlemen/index.html">Little Men</a></h2>
+            <p>A prototype of using just CSS to create an interavite experience rather than a canvas. I never took it any further as collision detection is much harder to do with CSS animated objects and sufferes from timers going out of sync.</p>
+        </div>
+        <div>
+            <h2><a href="https://github.com/elpollouk/servie">Servie</a></h2>
+            <p>An console application container written in C#. I put this together many years ago so that I could handle running lots of services like Tomcat and MySQL while developing on Windows without having my taskbar cluttered with console sessions.</p>
+        </div>
+        <div>
+            <h2>Brainfuck Interpreters</h2>
+            <p>I've always enjoyed the challenge of writing optimised interpreters in different languages. It's also a good exercise when moving to a new environment in order to become familiar with it. Here are a couple I've written in the past:</p>
+            <ul>
+                <li><a href="https://github.com/elpollouk/ChickenBF">JavaScript</a> - A test so see how fast I could make it in a browser. Try it in your browser <a href="ChickenBF/index.html">here</a> with this <a href="https://raw.githubusercontent.com/elpollouk/BVM/master/samples/mandelbrot.bf">sample</a>.</li>
+                <li><a href="https://github.com/elpollouk/BVM">C++</a> - Written on my Raspbery PI and includes a bf to asm compiler. Eventually I'll add jitting.</li>
+            </ul>
+        </div>
     </body>
 </html>
