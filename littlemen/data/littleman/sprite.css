@@ -1,0 +1,27 @@
+/*
+ * Sprite definition for Little Man
+ */
+.littleman {
+    width: 16px;
+    height: 16px;
+    background-image: url("sprite.png");
+    
+    -webkit-animation: littleman_walk .3s steps(3, end) infinite alternate;
+        -ms-animation: littleman_walk .3s steps(3, end) infinite alternate;
+            animation: littleman_walk .3s steps(3, end) infinite alternate;
+}
+
+@-webkit-keyframes littleman_walk {
+   from { background-position:  0px; }
+     to { background-position: -48px; }
+}
+
+@-ms-keyframes littleman_walk {
+   from { background-position:  0px; }
+     to { background-position: -48px; }
+}
+
+@keyframes littleman_walk {
+   from { background-position:  0px; }
+     to { background-position: -48px; }
+}

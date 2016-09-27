@@ -1,0 +1,25 @@
+/*
+ * Base sprite CSS
+ * Sets up the x+y stransitions and handy CSS classes that can be used by all sprites
+ */
+.sprite {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+    transition: top linear, left linear;
+}
+
+.flipX {
+    -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+}
+
+.flipY {
+    -webkit-transform: scaleY(-1);
+            transform: scaleY(-1);
+}
+
+.flipX.flipY {
+	-webkit-transform: scale(-1, -1);	
+	        transform: scale(-1, -1);
+}
