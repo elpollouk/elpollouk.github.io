@@ -1,0 +1,57 @@
+#viewerImg {
+    width: 100%;
+}
+
+.viewer {
+    position: relative;
+    text-align: center;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    color: black;
+}
+
+.viewer .controls {
+    position: absolute;
+    top: 50%;
+    margin-top: -16px;
+    width: 100%;
+}
+
+.viewer .button {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    background-color: rgba(192, 192, 192, 0.5);
+    background-size: cover;
+}
+
+.viewer .button:hover {
+    background-color: rgba(192, 192, 192, 0.7);
+}
+
+.viewer .button:active {
+    background-color: rgb(127, 127, 192);
+}
+
+.viewer .button.previous {
+    background-image: url(../slideshow/previous.png);
+    float: left;
+}
+
+.viewer .button.next {
+    background-image: url(../slideshow/next.png);
+    float: right;
+}
+
+.viewer .caption {
+    position: relative;
+    width: 100%;
+    height: 32px;
+    top: -32px;
+    background-color: rgba(192, 192, 192, 0.6);
+
+    font-family: "arial";
+    padding-top: 8px;
+    box-sizing: border-box;
+}

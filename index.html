@@ -2,10 +2,22 @@
     <head>
         <title>Adrian O'Grady</title>
         <link rel="stylesheet" href="css/common.css" />
+        <link rel="stylesheet" href="css/slideshow.css" />
+
+        <script src="js/slideshow.js"></script>
     </head>
-    <body>
+    <body onload="main()">
         <h1>Hello World</h1>
         <p>My name is Adrian O'Grady and one day I'll make this page pretty. In the mean time, here are a few things I've been working on for fun.</p>
+
+        <div class="viewer">
+            <img id="viewerImg"/>
+            <div class="controls">
+                <div class="button previous" onclick="previousButtonClicked()"></div>
+                <div class="button next" onclick="nextButtonClicked()"></div>
+            </div>
+            <div class="caption"></div>
+        </div>
 
         <div class="project">
             <h2><a href="https://github.com/elpollouk/ChickenTest">Chicken Test</a></h2>
