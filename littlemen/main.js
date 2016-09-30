@@ -27,10 +27,10 @@
 
 	document.addEventListener("DOMContentLoaded", function () {
 		log("Hello World!!");
-		
+
 		document.body.addEventListener("mousemove", moveMan);
 
-		man = new Sprite("littleman", document.body);
+		man = new Sprite("elephant", document.body);
 		man.moveTo((document.body.clientWidth - man.getWidth()) / 2, (document.body.clientHeight - man.getHeight()) / 2, 0);
 	});
 })();

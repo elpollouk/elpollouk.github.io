@@ -1,0 +1,27 @@
+/*
+ * Sprite definition for Nelly
+ */
+.elephant {
+    width: 32px;
+    height: 32px;
+    background-image: url("nelly.jpg");
+
+    -webkit-animation: elephant_walk .3s steps(4, end) infinite alternate;
+        -ms-animation: elephant_walk .3s steps(4, end) infinite alternate;
+            animation: elephant_walk .3s steps(4, end) infinite alternate;
+}
+
+@-webkit-keyframes elephant_walk {
+   from { background-position:  0px; }
+     to { background-position: -128px; }
+}
+
+@-ms-keyframes elephant_walk {
+   from { background-position:  0px; }
+     to { background-position: -128px; }
+}
+
+@keyframes elephant_walk {
+   from { background-position:  0px; }
+     to { background-position: -128px; }
+}
