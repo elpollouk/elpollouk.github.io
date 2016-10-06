@@ -88,7 +88,7 @@ window.line = function (m, c) {
 
 window.sinewave = function (freq, amplitude, phase) {
     freq = freq || 1;
-    amplitude = amplitude || 1;
+    amplitude = (amplitude || 1) / 2;
     phase = phase || 0;
     return function (x) {
         return Math.sin((x * 2 * Math.PI * freq) + phase) * amplitude;
