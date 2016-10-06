@@ -86,12 +86,28 @@ window.line = function (m, c) {
     }
 }
 
-window.wave = function (freq, amplitude, phase) {
+window.sinewave = function (freq, amplitude, phase) {
     freq = freq || 1;
     amplitude = amplitude || 1;
     phase = phase || 0;
     return function (x) {
         return Math.sin((x * 2 * Math.PI * freq) + phase) * amplitude;
+    }
+}
+
+window.squarewave = function (freq, amplitude, phase) {
+    freq = freq || 1;
+    var period = 1 / freq;
+    var halfPeriod = period / 2;
+    amplitude = amplitude || 1;
+    amplitude /= 2;
+    phase = phase || 0;
+    return function (x) {
+        var y = (x + phase);
+        y = (y < 0) ? y = halfPeriod - y : y;
+        y %= period;
+        y = y < halfPeriod ? amplitude : -amplitude;
+        return y;
     }
 }
 
