@@ -4,7 +4,7 @@ var imageDetails = [
     { path:"slideshow/moon001.jpg", caption:"This is the moon as seen through my \xA35 webcam" },
     { path:"slideshow/moon002.jpg", caption:"This is also the moon" },
     { path:"slideshow/mars.png", caption:"One night trying to get a good picture of Mars" },
-    { path:"slideshow/jupiter.png", caption:"Various images of Jupiter I taken" },
+    { path:"slideshow/jupiter.png", caption:"Various images of Jupiter I've taken" },
     { path:"slideshow/gba02.jpg", caption:"My GameBoy Advance web server from 2002!" },
     { path:"slideshow/gba01.jpg", caption:"A closer look at the DIY 3v-5v serial cable" },
     { path:"slideshow/firstaccess02.jpg", caption:"The first time someone in the real world connected to my GBA" },
