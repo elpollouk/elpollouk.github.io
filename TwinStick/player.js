@@ -13,6 +13,7 @@ Chicken.register("Player", ["Config", "ChickenVis.Math"], (Config, Math) => {
     }, {
         reset: function () {
             this.pos = Math.vector2(Config.game.width / 2, Config.game.height / 2);
+            this.vel = Math.vector2(0, 0);
             this._currentShotTime = 0;
         },
 
@@ -25,11 +26,13 @@ Chicken.register("Player", ["Config", "ChickenVis.Math"], (Config, Math) => {
         },
 
         update: function (dt) {
-            var dX = Config.player.speed * this._controller.move.x * dt;
-            var dY = Config.player.speed * this._controller.move.y * dt;
+            var dX = Config.player.acceleration * this._controller.move.x * dt;
+            var dY = Config.player.acceleration * this._controller.move.y * dt;
     
-            this.pos.x += dX;
-            this.pos.y += dY;
+            this.vel.x += dX;
+            this.vel.y += dY;
+            Math.scale2(this.vel, Config.player.friction);
+            Math.add2(this.pos, this.vel);
     
             if (this.pos.x < minX) this.pos.x = minX;
             else if (this.pos.x > maxX) this.pos.x = maxX;

@@ -9,7 +9,8 @@ Chicken.register("Config", [], () => {
             deadzoneSize: 0.2,
         },
         player: {
-            speed: 250,
+            acceleration: 25,
+            friction: 0.92,
             shotPeriod: 0.15,
             size: 15,
             colour: "rgb(0, 255, 0)",
@@ -17,6 +18,9 @@ Chicken.register("Config", [], () => {
         },
         enemy: {
             speed: 100,
+            speedScaleMin: 0.85,
+            speedScaleMax: 1.15,
+            lookaheadFactor: 100,
             spawnPeriod: 2,
             intialSpawnDelay: 3,
             minSpawnDistance: 150,
@@ -24,12 +28,12 @@ Chicken.register("Config", [], () => {
             colour: "orange",
         },
         bullet: {
-            speed: 400,
+            speed: 500,
             size: 5,
             colour: "red",
         },
         fieldVisualiser: {
-            stride: 5
+            stride: 10
         }
     };
 
