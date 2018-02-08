@@ -9,27 +9,24 @@ Chicken.register("Enemy", ["Config", "ChickenVis.Math"], (Config, Math) => {
     playerEnemySizeSqrd *= playerEnemySizeSqrd;
 
     return Chicken.Class(function (game, pos) {
-        this.game = game;
+        this._game = game;
         this.pos = Math.clone2(pos);
-        this.speed = Config.enemy.speed;
-        this.speed *= Math.randomRange(Config.enemy.speedScaleMin, Config.enemy.speedScaleMax);
-        this.lookaheadFactor = Math.randomRange(0, Config.enemy.lookaheadFactor);
+        this._speed = Config.enemy.speed;
+        this._speed *= Math.randomRange(Config.enemy.speedScaleMin, Config.enemy.speedScaleMax);
+        this._lookaheadFactor = Math.randomRange(0, Config.enemy.lookaheadFactor);
     }, {
         update: function (dt) {
-            var moveTarget = Math.clone2(this.game.player.vel);
-            Math.scale2(moveTarget, this.lookaheadFactor);
-            Math.add2(moveTarget, this.game.player.pos);
+            var moveTarget = Math.clone2(this._game.player.vel);
+            Math.scale2(moveTarget, this._lookaheadFactor);
+            Math.add2(moveTarget, this._game.player.pos);
             Math.sub2(moveTarget, this.pos);
             Math.normalise2(moveTarget);
-            Math.scaleAdd2(this.pos, moveTarget, this.speed * dt);
+            Math.scaleAdd2(this.pos, moveTarget, this._speed * dt);
 
-            if (this.pos.x < minX) this.pos.x = minX;
-            else if (this.pos.x > maxX) this.pos.x = maxX;
-            if (this.pos.y < minY) this.pos.y = minY;
-            else if (this.pos.y > maxY) this.pos.y = maxY;
+            this._game.enforceBounds(this.pos, Config.enemy.size);
 
-            if (Math.distanceBetweenSqrd2(this.game.player.pos, this.pos) <= playerEnemySizeSqrd)
-                this.game.killPlayer();
+            if (Math.distanceBetweenSqrd2(this._game.player.pos, this.pos) <= playerEnemySizeSqrd)
+                this._game.killPlayer();
         },
 
         render: function (dt, draw) {

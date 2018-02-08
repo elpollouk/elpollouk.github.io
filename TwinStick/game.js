@@ -37,16 +37,37 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Chi
             this.bullets.splice(i, 1);
         },
 
+        fireBurst: function (pos) {
+            var dir = Math.vector2(0, 1);
+            var rot = Math.TWO_PI / Config.game.burstSize;
+            for (var i = 0; i < Config.game.burstSize; i++) {
+                this.spawnBullet(pos, dir);
+                Math.rotate2(dir, rot);
+            }
+        },
+
         killEnemy: function (enemy) {
             var i = this.enemies.indexOf(enemy);
             this.enemies.splice(i, 1);
             this.score++;
+            if (this.score % Config.game.burstScore === 0)
+                this.fireBurst(this.player.pos);
         },
 
         killPlayer: function () {
             if (this.highScore < this.score)
                 this.highScore = this.score;
             this.reset();
+        },
+
+        enforceBounds: function(vector2, width) {
+            var maxX = Config.game.width - width;
+            var maxY = Config.game.height - width;
+
+            if (vector2.x < width) vector2.x = width;
+            else if (vector2.x > maxX) vector2.x = maxX;
+            if (vector2.y < width) vector2.y = width;
+            else if (vector2.y > maxY) vector2.y = maxY;
         },
 
         _update: function (dt) {
@@ -110,7 +131,7 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Chi
     
             for (var i = 0; i < this.enemies.length; i++)
                 this.enemies[i].update(dt);
-        }
+        },
     });
 
 });

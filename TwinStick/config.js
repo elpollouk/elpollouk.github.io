@@ -4,6 +4,8 @@ Chicken.register("Config", [], () => {
             updatePeriod: 0.01,
             width: 800,
             height: 600,
+            burstScore: 50,
+            burstSize: 24,
         },
         controller: {
             deadzoneSize: 0.2,
@@ -12,10 +14,10 @@ Chicken.register("Config", [], () => {
         player: {
             acceleration: 25,
             friction: 0.92,
-            shotPeriod: 0.15,
+            shotPeriod: 0.1,
             size: 15,
             colour: "rgb(0, 255, 0)",
-            jitter: 0.1,
+            jitter: 0.2,
         },
         enemy: {
             speed: 100,

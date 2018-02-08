@@ -34,10 +34,7 @@ Chicken.register("Player", ["Config", "ChickenVis.Math"], (Config, Math) => {
             Math.scale2(this.vel, Config.player.friction);
             Math.add2(this.pos, this.vel);
     
-            if (this.pos.x < minX) this.pos.x = minX;
-            else if (this.pos.x > maxX) this.pos.x = maxX;
-            if (this.pos.y < minY) this.pos.y = minY;
-            else if (this.pos.y > maxY) this.pos.y = maxY;
+            this._game.enforceBounds(this.pos, Config.player.size);
     
             var shoot = Math.clone2(this._controller.shoot);
             this._currentShotTime -= dt;
