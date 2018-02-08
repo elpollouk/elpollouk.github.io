@@ -8,9 +8,12 @@ Chicken.register("Gamepad", ["Config", "ChickenVis.Math"], (Config, Math) => {
         ShootY: 3
     };
 
+    var _isDisconnected = true;
+
     function getAxes(axes) {
         var gamePad = navigator.getGamepads()[0];
-        if (!gamePad) return 0;
+        _isDisconnected = !gamePad;
+        if (_isDisconnected) return 0;
         var v = gamePad.axes[axes];
         if ((-Config.controller.deadzoneSize < v) && (v < Config.controller.deadzoneSize)) return 0;
         return v;
@@ -25,6 +28,13 @@ Chicken.register("Gamepad", ["Config", "ChickenVis.Math"], (Config, Math) => {
             this.move.y = getAxes(Axes.MoveY);
             this.shoot.x = getAxes(Axes.ShootX);
             this.shoot.y = getAxes(Axes.ShootY);
+        }
+    }, {
+        isDisconnected: {
+            get: function () {
+                return _isDisconnected;
+            },
+            enumerable: true
         }
     });
 });

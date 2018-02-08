@@ -7,6 +7,7 @@ Chicken.register("Config", [], () => {
         },
         controller: {
             deadzoneSize: 0.2,
+            notConnectedWarning: true,
         },
         player: {
             acceleration: 25,

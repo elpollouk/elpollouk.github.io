@@ -67,6 +67,20 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Chi
     
             this.draw.text(`${this.score}`, 5, 5);
             this.draw.text(`${this.highScore}`, 5, 15);
+
+            this._renderControllerWarning();
+        },
+
+        _renderControllerWarning: function() {
+            if (Config.controller.notConnectedWarning && this.controller.isDisconnected) {
+                var width = 300;
+                var height = 20;
+                var x = (Config.game.width - width) / 2;
+                var y = 10;
+
+                this.draw.rect(x, y, width, height, "red");
+                this.draw.text('*** NO GAMEPAD DETECTED ***', x + 70, y + 6);
+            }
         },
     
         _updateBullets: function (dt) {
