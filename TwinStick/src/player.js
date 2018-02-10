@@ -36,17 +36,49 @@ Chicken.register("Player", ["Config", "ChickenVis.Math"], (Config, Math) => {
     
             this._game.enforceBounds(this.pos, Config.player.size);
     
-            var shoot = Math.clone2(this._controller.shoot);
+            var shoot;
+            
+            if (Config.player.aimbot) {
+                var target = this._closestEnemy();
+                if (target) {
+                    shoot = Math.subAndClone2(target.pos, this.pos);
+                }
+                else {
+                    shoot = Math.vector2(0, 0);
+                }
+            }
+            else {
+                shoot = Math.clone2(this._controller.shoot);
+            }
+
             this._currentShotTime -= dt;
             if ((shoot.x + shoot.y) !== 0.0 && this._currentShotTime <= 0) {
                 this._jitter(shoot);
                 this._game.spawnBullet(this.pos, shoot);
                 this._currentShotTime = Config.player.shotPeriod;
+                this._game.sounds.playPlayerShot();
             }
         },
 
         render: function (dt, draw) {
             draw.circle(this.pos.x, this.pos.y, Config.player.size, Config.player.colour);
         },
+
+        _closestEnemy: function () {
+            var enemies = this._game.enemies;
+            if (enemies.length === 0) return null;
+
+            var minEnemy = enemies[0];
+            var minDistance = Math.distanceBetweenSqrd2(this.pos, enemies[0].pos);
+
+            for (var i = 1; i < enemies.length; i++) {
+                var distance = Math.distanceBetweenSqrd2(this.pos, enemies[i].pos);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    minEnemy = enemies[i];
+                }
+            }
+            return minEnemy;
+        }
     });
 });

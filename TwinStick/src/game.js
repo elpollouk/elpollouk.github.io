@@ -1,5 +1,5 @@
-Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "ChickenVis.FixedDeltaUpdater", "ChickenVis.Math"],
-(Config, Player, Bullet, Enemy, Gamepad, FdUpdater, Math) => {
+Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "SoundPlayer", "ChickenVis.FixedDeltaUpdater", "ChickenVis.Math"],
+(Config, Player, Bullet, Enemy, Gamepad, SoundPlayer, FdUpdater, Math) => {
     "use strict";
 
     return Chicken.Class(function (draw) {
@@ -11,6 +11,8 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Chi
             that._update(dt);
         }, Config.game.updatePeriod);
         this.reset();
+
+        this.sounds = new SoundPlayer();
     }, {
         reset: function () {
             this.player = new Player(this, this.controller);
@@ -44,6 +46,7 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Chi
                 this.spawnBullet(pos, dir);
                 Math.rotate2(dir, rot);
             }
+            this.sounds.playPlayerBurst();
         },
 
         killEnemy: function (enemy) {
@@ -52,12 +55,16 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Chi
             this.score++;
             if (this.score % Config.game.burstScore === 0)
                 this.fireBurst(this.player.pos);
+
+            this.sounds.playEnemyDeath();
         },
 
         killPlayer: function () {
             if (this.highScore < this.score)
                 this.highScore = this.score;
             this.reset();
+
+            this.sounds.playPlayerDeath();
         },
 
         enforceBounds: function(vector2, width) {

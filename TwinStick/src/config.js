@@ -6,6 +6,7 @@ Chicken.register("Config", [], () => {
             height: 600,
             burstScore: 50,
             burstSize: 24,
+            enableSounds: true,
         },
         controller: {
             deadzoneSize: 0.2,
@@ -18,6 +19,7 @@ Chicken.register("Config", [], () => {
             size: 15,
             colour: "rgb(0, 255, 0)",
             jitter: 0.2,
+            aimbot: false,
         },
         enemy: {
             speed: 100,
