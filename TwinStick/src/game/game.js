@@ -1,27 +1,34 @@
-Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "SoundPlayer", "ChickenVis.FixedDeltaUpdater", "ChickenVis.Math"],
-(Config, Player, Bullet, Enemy, Gamepad, SoundPlayer, FdUpdater, Math) => {
+Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Mode.PreGame", "Mode.Play", "Gamepad", "SoundPlayer", "ChickenVis.FixedDeltaUpdater", "ChickenVis.Math"],
+(Config, Player, Bullet, Enemy, PreGameMode, PlayMode, Gamepad, SoundPlayer, FdUpdater, Math) => {
     "use strict";
 
     return Chicken.Class(function (draw) {
         var that = this;
         this.draw = draw;
+        this.score = 0;
         this.highScore = 0;
+        this.bullets = [];
+        this.enemies = [];
+
         this.controller = new Gamepad();
+        this.player = new Player(this, this.controller);
+
         this.fixedUpdater = new FdUpdater((dt) => {
             that._update(dt);
         }, Config.game.updatePeriod);
-        this.reset();
+
+        this._currentMode = new PreGameMode(this);
+        this._currentMode.start();
 
         this.sounds = new SoundPlayer();
     }, {
-        reset: function () {
-            this.player = new Player(this, this.controller);
+        startGame: function () {
+            this.player.reset();
             this.bullets = [];
             this.enemies = [];
-            this.spawnCount = 1;
-            this.currentShotTime = 0;
-            this.currentEnemyTime = Config.enemy.intialSpawnDelay;
             this.score = 0;
+            this._currentMode = new PlayMode(this);
+            this._currentMode.start();
         },
 
         update: function (dt) {
@@ -32,6 +39,10 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Sou
 
         spawnBullet: function (pos, vel) {
             this.bullets.push(new Bullet(this, pos, vel));
+        },
+
+        spawnEnemy: function (pos) {
+            this.enemies.push(new Enemy(this, pos));
         },
 
         removeBullet: function (bullet) {
@@ -62,9 +73,10 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Sou
         killPlayer: function () {
             if (this.highScore < this.score)
                 this.highScore = this.score;
-            this.reset();
 
             this.sounds.playPlayerDeath();
+
+            this._currentMode = new PreGameMode(this);
         },
 
         enforceBounds: function(vector2, width) {
@@ -78,23 +90,24 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Sou
         },
 
         _update: function (dt) {
-            this.player.update(dt);
-            this._updateEnemies(dt);
-            this._updateBullets(dt);
+            this._currentMode.update(dt);
         },
 
         _render: function (dt) {
-            this.draw.rect(0, 0, Config.game.width, Config.game.height, "silver");
-            this.player.render(dt, this.draw);
+            var draw = this.draw;
+            draw.rect(0, 0, Config.game.width, Config.game.height, "silver");
+            this.player.render(dt, draw);
     
             for (var i = 0; i < this.enemies.length; i++)
-                this.enemies[i].render(dt, this.draw);
+                this.enemies[i].render(dt, draw);
     
             for (var i = 0; i < this.bullets.length; i++)
-                this.bullets[i].render(dt, this.draw);
+                this.bullets[i].render(dt, draw);
+
+            this._currentMode.render(dt, draw);
     
-            this.draw.text(`${this.score}`, 5, 5);
-            this.draw.text(`${this.highScore}`, 5, 15);
+            draw.text(`Score      : ${this.score}`, 5, 5);
+            draw.text(`High Score : ${this.highScore}`, 5, 15);
 
             this._renderControllerWarning();
         },
@@ -110,35 +123,7 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Gamepad", "Sou
                 this.draw.text('*** NO GAMEPAD DETECTED ***', x + 70, y + 6);
             }
         },
-    
-        _updateBullets: function (dt) {
-            for (var i = 0; i < this.bullets.length; i++)
-                this.bullets[i].update(dt);
-        },
-    
-        _updateEnemies: function (dt) {
-            this.currentEnemyTime -= dt;
-            if (this.currentEnemyTime <= 0) {
-                this.currentEnemyTime = Config.enemy.spawnPeriod;
-                var neededEnemies = this.spawnCount - this.enemies.length;
-                for (var i = 0; i < neededEnemies; i++) {
-                    var pos;
-                    do
-                    {
-                        var x = Math.randomRange(0, Config.game.width);
-                        var y = Math.randomRange(0, Config.game.height);
-                        pos = Math.vector2(x, y);
-                    }
-                    while (Math.distanceBetweenSqrd2(this.player.pos, pos) < Config.enemy.minSpawnDistanceSqrd);
-    
-                    this.enemies.push(new Enemy(this, pos));
-                }
-                this.spawnCount++;
-            }
-    
-            for (var i = 0; i < this.enemies.length; i++)
-                this.enemies[i].update(dt);
-        },
+
     });
 
 });
