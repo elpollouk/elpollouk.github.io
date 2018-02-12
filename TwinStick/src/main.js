@@ -6,14 +6,14 @@ function (Config, parseConfig, Game, FieldVisualiser, UpdateLoop, Draw) {
     var game;
     var updater = new UpdateLoop((dt) => {
         game.update(dt);
-        visualiser.render();
+        // visualiser.render();
     });
 
     window.onload = () => {
         parseConfig();
         var draw = new Draw(document.body, Config.game.width, Config.game.height);
         game = new Game(draw);
-        visualiser = new FieldVisualiser(draw.context, document.body);
+        // visualiser = new FieldVisualiser(draw.context, document.body);
         updater.paused = false;
     }
 });

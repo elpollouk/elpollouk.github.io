@@ -14,23 +14,46 @@ Chicken.register("Enemy", ["Config", "ChickenVis.Math"], (Config, Math) => {
         this._speed = Config.enemy.speed;
         this._speed *= Math.randomRange(Config.enemy.speedScaleMin, Config.enemy.speedScaleMax);
         this._lookaheadFactor = Math.randomRange(0, Config.enemy.lookaheadFactor);
+        this._isAlive = true;
+        this._deathTimer = 0.0;
     }, {
         update: function (dt) {
-            var moveTarget = Math.clone2(this._game.player.vel);
-            Math.scale2(moveTarget, this._lookaheadFactor);
-            Math.add2(moveTarget, this._game.player.pos);
-            Math.sub2(moveTarget, this.pos);
-            Math.normalise2(moveTarget);
-            Math.scaleAdd2(this.pos, moveTarget, this._speed * dt);
+            if (this._isAlive) {
+                var moveTarget = Math.clone2(this._game.player.vel);
+                Math.scale2(moveTarget, this._lookaheadFactor);
+                Math.add2(moveTarget, this._game.player.pos);
+                Math.sub2(moveTarget, this.pos);
+                Math.normalise2(moveTarget);
+                Math.scaleAdd2(this.pos, moveTarget, this._speed * dt);
 
-            this._game.enforceBounds(this.pos, Config.enemy.size);
+                this._game.enforceBounds(this.pos, Config.enemy.size);
 
-            if (Math.distanceBetweenSqrd2(this._game.player.pos, this.pos) <= playerEnemySizeSqrd)
-                this._game.killPlayer();
+                if (Math.distanceBetweenSqrd2(this._game.player.pos, this.pos) <= playerEnemySizeSqrd)
+                    this._game.killPlayer();
+            }
+            else {
+                this._deathTimer += dt;
+                if (this._deathTimer >= Config.enemy.deathTime)
+                    this._game.removeEnemy(this);
+            }
         },
 
         render: function (dt, draw) {
-            draw.circle(this.pos.x, this.pos.y, Config.enemy.size, Config.enemy.colour);
-        }
+            if (this._isAlive) {
+                draw.circle(this.pos.x, this.pos.y, Config.enemy.size, Config.enemy.colour);
+            }
+            else {
+                var scale = this._deathTimer / Config.enemy.deathTime;
+                var size = Config.enemy.deathSize * scale;
+                var alpha = draw.context.globalAlpha;
+                draw.context.globalAlpha = 1.0 - scale;
+                draw.circle(this.pos.x, this.pos.y, size, Config.enemy.colour);
+                draw.context.globalAlpha = alpha;
+            }
+        },
+
+        kill: function () {
+            this._isAlive = false;
+        },
     });
 });

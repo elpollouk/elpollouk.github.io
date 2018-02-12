@@ -61,13 +61,17 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Mode.PreGame",
         },
 
         killEnemy: function (enemy) {
-            var i = this.enemies.indexOf(enemy);
-            this.enemies.splice(i, 1);
+            enemy.kill();
             this.score++;
             if (this.score % Config.game.burstScore === 0)
                 this.fireBurst(this.player.pos);
 
             this.sounds.playEnemyDeath();
+        },
+
+        removeEnemy: function (enemy) {
+            var i = this.enemies.indexOf(enemy);
+            this.enemies.splice(i, 1);
         },
 
         killPlayer: function () {

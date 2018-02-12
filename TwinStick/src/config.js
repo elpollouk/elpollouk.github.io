@@ -31,6 +31,8 @@ Chicken.register("Config", [], () => {
             minSpawnDistance: 150,
             size: 15,
             colour: "orange",
+            deathTime: 0.3,
+            deathSize: 150,
         },
         bullet: {
             speed: 500,
