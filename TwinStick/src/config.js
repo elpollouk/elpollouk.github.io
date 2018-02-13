@@ -8,6 +8,9 @@ Chicken.register("Config", [], () => {
             burstSize: 24,
             enableSounds: true,
         },
+        gfx: {
+            visualEcho: 0.45
+        },
         controller: {
             deadzoneSize: 0.2,
             notConnectedWarning: true,
@@ -30,6 +33,8 @@ Chicken.register("Config", [], () => {
             intialSpawnDelay: 3,
             minSpawnDistance: 150,
             size: 15,
+            throbFactor: 0.15,
+            throbPeriod: 0.6,
             colour: "orange",
             deathTime: 0.3,
             deathSize: 150,

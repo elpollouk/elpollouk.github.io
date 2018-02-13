@@ -16,6 +16,12 @@ Chicken.register("Enemy", ["Config", "ChickenVis.Math"], (Config, Math) => {
         this._lookaheadFactor = Math.randomRange(0, Config.enemy.lookaheadFactor);
         this._isAlive = true;
         this._deathTimer = 0.0;
+
+        this._currentSize = Config.enemy.size;
+        this._minSize = Config.enemy.size * (1.0 - Config.enemy.throbFactor);
+        this._maxSize = Config.enemy.size * (1.0 + Config.enemy.throbFactor);
+        this._throbTime = Config.enemy.throbPeriod * Math.random();
+        this._throbDirection = 1;
     }, {
         update: function (dt) {
             if (this._isAlive) {
@@ -30,6 +36,17 @@ Chicken.register("Enemy", ["Config", "ChickenVis.Math"], (Config, Math) => {
 
                 if (Math.distanceBetweenSqrd2(this._game.player.pos, this.pos) <= playerEnemySizeSqrd)
                     this._game.killPlayer();
+
+                this._throbTime += dt * this._throbDirection;
+                if (this._throbTime >= Config.enemy.throbPeriod) {
+                    this._throbTime = Config.enemy.throbPeriod;
+                    this._throbDirection = -1;
+                }
+                else if (this._throbTime <= 0) {
+                    this._throbTime = 0;
+                    this._throbDirection = 1;
+                }
+                this._currentSize = this._minSize + ((this._maxSize - this._minSize) * (this._throbTime / Config.enemy.throbPeriod));
             }
             else {
                 this._deathTimer += dt;
@@ -40,7 +57,7 @@ Chicken.register("Enemy", ["Config", "ChickenVis.Math"], (Config, Math) => {
 
         render: function (dt, draw) {
             if (this._isAlive) {
-                draw.circle(this.pos.x, this.pos.y, Config.enemy.size, Config.enemy.colour);
+                draw.circle(this.pos.x, this.pos.y, this._currentSize, Config.enemy.colour);
             }
             else {
                 var scale = this._deathTimer / Config.enemy.deathTime;
@@ -54,6 +71,13 @@ Chicken.register("Enemy", ["Config", "ChickenVis.Math"], (Config, Math) => {
 
         kill: function () {
             this._isAlive = false;
+        },
+    }, {
+        isAlive: {
+            get: function () {
+                return this._isAlive;
+            },
+            enumerable: true
         },
     });
 });

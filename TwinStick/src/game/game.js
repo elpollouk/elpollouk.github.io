@@ -99,14 +99,18 @@ Chicken.register("Game", ["Config", "Player", "Bullet", "Enemy", "Mode.PreGame",
 
         _render: function (dt) {
             var draw = this.draw;
+            
+            draw.context.globalAlpha = 1.0 - Config.gfx.visualEcho;
             draw.rect(0, 0, Config.game.width, Config.game.height, "silver");
+            draw.context.globalAlpha = 1.0;
+
+            for (var i = 0; i < this.bullets.length; i++)
+                this.bullets[i].render(dt, draw);
+
             this.player.render(dt, draw);
     
             for (var i = 0; i < this.enemies.length; i++)
                 this.enemies[i].render(dt, draw);
-    
-            for (var i = 0; i < this.bullets.length; i++)
-                this.bullets[i].render(dt, draw);
 
             this._currentMode.render(dt, draw);
     
