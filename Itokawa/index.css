@@ -1,0 +1,594 @@
+/*
+ * Element Defaults
+ */
+body {
+    font-family: sans-serif;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    color: rgb(64, 64, 64);
+}
+
+#uiContainer {
+    width: 100vw;
+}
+
+@media (min-width: 600px) {
+    body {
+        /* Image details:
+         * "Tree Framing British Countryside" by incurable_hippie is licensed under CC BY-NC 2.0 
+         * https://search.creativecommons.org/photos/885474ad-2b94-4296-ab02-b427d28e8e59
+         */
+        background-image: url("/background-wide.jpg");
+        background-position: center;
+        background-size: cover;
+    }
+    #uiContainer {
+        width: 600px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+button {
+    width: calc(25% - 4px);
+    height: 2.5em;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: large;
+}
+
+a {
+    color: rgb(0, 0, 238);
+}
+
+a:visited {
+    color: rgb(0, 0, 238);
+}
+
+
+/*
+ * General Purpose
+ */
+.container {
+    padding: 2px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: x-large;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+.pageContent {
+    padding-left: 0.5em;
+}
+
+/*
+ * System Drawer
+ * Visible statis bar height: 1.5em + 10px
+ *     #statusBar padding * 2 (4px)
+ *     .led border * 2 (4px)
+ *     .led margin * 2 (2px)
+ *     .led height 1.5m
+ */
+#statusBar {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, calc(-100% + 1.5em + 10px));
+
+    width: 100vw;
+    max-width: 600px;
+    background-color: lightgray;
+    padding: 2px;
+    box-sizing: border-box;
+
+    transition: transform 0.5s ease-in-out;
+}
+
+.debug #statusBar {
+    transition: transform 1.5s ease-in-out;
+}
+
+#statusBar.expanded {
+    transform: translate(-50%, 0);
+}
+
+.globalControls {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.globalControls button {
+    width: calc(25% - 4px);;
+}
+
+/* Back button */
+.backButton {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1.5em;
+    height: 1.5em;
+    margin: 2px; /* Container padding + led margin */
+    border: 2px solid transparent;
+    outline: none;
+    padding: 0;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: middle;
+
+    font-size: x-large;
+    font-family: monospace;
+    font-weight: bold;
+    color: rgb(64, 64, 64);
+}
+
+.handle {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: xx-large;
+    font-weight: bold;
+    margin-bottom: 0.2em;
+}
+
+.rootPage .backButton,
+.expanded .backButton {
+    display: none;
+}
+
+.backButton:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.backButton:active {
+    background-color: rgba(0, 0, 0, 0.4)
+}
+
+/* Connection status LEDs */
+.connectionStatus {
+    text-align: right;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.connectionStatus .led {
+    width: 1.5em;
+    height: 1.5em;
+    margin: 1px;
+    display: inline-block;
+    border-color: rgb(24, 24, 24);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 0.75em;
+    transition: background-color 0.2s;
+}
+
+.connectionStatus .disconnected {
+    background-color: gray;
+}
+
+.connectionStatus .connecting {
+    background-color: orange;
+}
+
+.connectionStatus .connected {
+    background-color: greenyellow;
+}
+
+.connectionStatus .error {
+    background-color: red;
+}
+
+
+/*
+ * Content Area Protection
+ */
+#protection {
+    position: absolute;
+    top: 0;
+    visibility: hidden; /* NOTE: You can't transition on display */
+    height: 100vh;
+    width: 100%;
+    opacity: 0;
+    background-color: black;
+    transition: opacity 0.5s, visibility 0.5s step-end;
+}
+
+.debug #protection {
+    transition: opacity 1.5s, visibility 1.5s step-end;
+}
+
+#protection.active {
+    visibility: visible;
+    opacity: 0.6;
+    transition-timing-function: linear, step-start;
+}
+
+
+/*
+ * User Prompts
+ */
+#popupContainer {
+    position: absolute;
+    display: none;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+#popupContainer.active {
+    display: block;
+}
+
+.prompt, .about {
+    position: absolute;
+    padding: 0.5em;
+    width: 25em;
+    max-width: 100vw;
+    box-sizing: border-box;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: whitesmoke;
+    border: rgb(64, 64, 64) solid 4px;
+}
+
+.prompt .message {
+    margin-bottom: 1.0em;
+    white-space: pre-line;
+}
+
+.prompt.error .message {
+    color: darkred;
+    font-weight: bold;
+}
+
+.prompt .buttons {
+    width: 100%;
+    text-align: center;
+}
+.prompt button {
+    width: 6em;
+}
+
+.prompt.stacked .message {
+    font-weight: bold;
+    font-size: x-large;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+.prompt.stacked button {
+    width: 100%;
+    margin-top: 0.5em;
+}
+
+
+/*
+ * About popup
+ */
+.about .websiteURl {
+    margin-bottom: 1.5em;
+}
+
+.about .value {
+    font-style: italic;
+}
+
+.about .buttons {
+    margin-top: 2.5em;
+    text-align: right;
+}
+
+.attribution {
+    margin-top: 0.5em;
+}
+
+.attribution .subtitle {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.attribution img {
+    vertical-align: middle;
+}
+
+/*
+ * Content Area
+ * Depends on normal status bar height:
+ *     #statusBar padding * 2 (4px)
+ *     .led border * 2 (4px)
+ *     .led margin * 2 (2px)
+ *     .led height 1.5m
+ */
+#contentParent {
+    overflow: hidden;
+    margin-top: calc(10px + 1.5em);
+    height: calc(100vh - (10px + 1.5em));
+    box-sizing: border-box;
+    background-color: lightgoldenrodyellow;
+}
+
+#contentArea {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    transition: left 0.3s ease-out;
+    box-sizing: border-box;
+}
+
+.debug .page {
+    transition: left 1.5s ease-out;
+}
+
+
+/*
+ * Index page
+ */
+.noTrainsContainer {
+    display: none;
+    position: absolute; 
+    top: 30%;
+    transform: translateY(-50%);
+    text-align: center;
+    width: calc(100% - 4px);
+}
+
+.noTrainsContainer .message {
+    font-size: x-large;
+    font-style: italic;
+    margin-top: 1.0em;
+    margin-bottom: 1.0em;
+}
+
+.noTrainsContainer button {
+    width: 50%;
+}
+
+.noTrains .noTrainsContainer {
+    display: unset;
+}
+
+.emergencyStop {
+    padding: 1em;
+}
+
+.emergencyStop button {
+    width: calc(100% - 4px);
+    height: 4em;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.emergencyStop button:active {
+    background-color: darkred;
+}
+
+.noTrains .emergencyStop, .loading .emergencyStop {
+    display: none;
+}
+
+
+/*
+ * Train Controls
+ */
+.trainControls {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.trainControl .title {
+    font-size: large;
+}
+
+.trainControl .discreteButtons {
+    display: none;
+}
+
+.trainControl.discrete .discreteButtons {
+    display: unset;
+}
+
+.trainControl.discrete input[type="range"] {
+    display: none;
+}
+
+.trainControl button {
+    width: calc(20% - 4px);
+}
+
+.trainControl input {
+    margin-left: 2px;
+    margin-right: 2px;
+    width: calc(60% - 1em);
+}
+
+
+/*
+ * QR Code Control
+ */
+.qrcode {
+    margin-top: 1em;
+    text-align: center;
+}
+
+.qrcode img {
+    image-rendering: pixelated; 
+    width: 12em;
+    height: 12em;
+    border: black 4px solid;
+    margin: 0.5em;
+}
+
+.qrcode a {
+    color: black;
+    font-weight: bold;
+}
+
+.qrcode a:visited {
+    color: black;
+}
+
+
+/*
+ * TTY Control
+ */
+.tty {
+    background-color: black;
+    font-family: monospace;
+    white-space: pre-wrap;
+    color: lightgray;
+    padding: 4px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.tty span {
+    word-wrap: break-word;
+}
+
+.tty .stderr {
+    color: red;
+}
+
+.updateTty .tty {
+    height: 100%;
+}
+
+
+/*
+ * Train Roster
+ */
+.trainRoster .trains {
+    margin-top: 1.0em;
+    margin-bottom: 1.0em;
+}
+
+.trainRoster .train {
+    font-size: large;
+    font-weight: bold;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    cursor: pointer;
+}
+
+.trainRoster .train::after {
+    color: gray;
+    font-family: monospace;
+    font-size: x-large;
+    /* vertical-align: middle; */
+    content: ">";
+    margin-left: 1.0em;
+}
+
+.trainRoster .train:hover, .trainRoster .train:active {
+    background-color: rgba(196, 196, 196, 0.3);
+}
+
+.trainRoster .buttons {
+    text-align: right;
+}
+
+
+/*
+ * Train Editor
+ */
+.trainEditor .pageContent {
+    font-size: large;
+    font-weight: bold;
+}
+
+.trainEditor .setting {
+    margin-top: 1.0em;
+    margin-bottom: 1.0em;
+}
+
+.trainEditor .label {
+    margin-bottom: 0.2em;
+}
+
+.trainEditor .setting input {
+    width: calc(100% - 4px);
+    margin-left: 2px;
+    margin-right: 2px;
+    height: 2.0em;
+}
+
+.trainEditor .setting.speed .options {
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+}
+
+.trainEditor .setting.speed span {
+    font-size: medium;
+    display: inline-block;
+}
+
+.trainEditor .setting.speed input[type="checkbox"] {
+    font-size: medium;
+    width: 1.0em;
+    height: 1.0em;
+    margin-left: 0.5em;
+    margin-top: 0;
+    margin-bottom: 0;
+    /* Forcing the checkbox to line up with its label */
+    position: relative;
+    top: 0.1em;
+}
+
+.trainEditor .discreteSettings {
+    display: none;
+}
+
+.trainEditor.discrete .discreteSettings {
+    display: unset;
+}
+
+.trainEditor.discrete .nonDiscreteSettings {
+    display: none;
+}
+
+.trainEditor .discreteSettings input[type="number"] {
+    width: calc(33.33% - 4px);
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.trainEditor .nonDiscreteSettings span {
+    margin-bottom: 0.5em;
+}
+
+.trainEditor .buttons {
+    text-align: right;
+}
+
+
+/*
+ * Icons
+ */
+.iconButton {
+    vertical-align: bottom;
+    padding: 3px;
+}
+
+.iconButton img {
+    height: 100%;
+}
