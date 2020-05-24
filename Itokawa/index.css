@@ -9,6 +9,10 @@ body {
     color: rgb(64, 64, 64);
 }
 
+input:read-only {
+    background-color: lightgray;
+}
+
 #uiContainer {
     width: 100vw;
 }
@@ -64,6 +68,91 @@ a:visited {
 
 .pageContent {
     padding-left: 0.5em;
+}
+
+/*
+ * Draggable List
+ */
+.dragItem .deleteContainer {
+    display: none;
+    width: 1.5em;
+    margin-right: 8px;
+}
+
+.deleteEnabled .dragItem .deleteContainer {
+    display: unset;
+}
+
+.dragItem .deleteContainer button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: none;
+    border-radius: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url(icons/delete.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    font-weight: bold;
+}
+
+.dragItem {
+    display: flex;
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding: 4px;
+    border-width: 2px;
+    border-style: solid;
+    box-sizing: border-box;
+
+    background-color: lightgray;
+    border-color: slategray;
+}
+
+.dragItem .dragContent {
+    flex-grow: 1;
+}
+
+.dragHandle {
+    cursor: grab;
+    width: 20px;
+    margin: -4px;
+    margin-left: 0;
+    padding: 4px;
+
+    background-image: url(icons/drag_handle.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.dragItem.dragging .dragHandle {
+    cursor: grabbing;
+}
+
+.dragItem.dragging {
+    position: relative;
+    z-index: 1;
+    left: 5px;
+    box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.4);
+    cursor: grabbing;
+}
+
+.dragItem.shiftable {
+    transition: transform 0.2s ease-in-out;
+}
+
+.dragItem.shiftDown {
+    transform: translateY(calc(100% + 2px));
+}
+
+.dragItem.shiftUp {
+    transform: translateY(calc(-100% - 2px));
+}
+
+.dragItem.deleting {
+    transition: 0.2s ease-in-out;
+    transform: translateY(-50%) scale(0, 0);
 }
 
 /*
@@ -395,6 +484,21 @@ a:visited {
 
 .trainControl .title {
     font-size: large;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.trainControl .title:hover,
+.trainControl .title:active {
+    background-color: rgba(196, 196, 196, 0.3);
+}
+
+.trainControl .title::after {
+    color: gray;
+    font-family: monospace;
+    font-size: x-large;
+    content: ">";
+    margin-left: 1.0em;
 }
 
 .trainControl .discreteButtons {
@@ -417,6 +521,75 @@ a:visited {
     margin-left: 2px;
     margin-right: 2px;
     width: calc(60% - 1em);
+}
+
+.trainControl .expandedControls {
+    margin-bottom: 4px;
+}
+
+.trainControl .speedDisplay {
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    width: calc(60% - 6px);
+    height: calc(2.5em + 1px);
+
+    border-color: rgb(118, 118, 118);
+    border-style: solid;
+    border-width: 1px;
+    background-color: lightgray;
+    line-height: calc(2.5em + 1px);
+}
+
+.trainControl .speedDisplay > span.forward {
+    color: darkgreen;
+}
+
+.trainControl .speedDisplay > span.reverse {
+    color: darkred;
+}
+
+.trainControl .speedDisplay > span {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+
+/*
+ * Loco Control Panel
+ */
+
+.function {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    width: calc(50% - 4px);
+    height: 2.7em;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.function.latchedOn {
+    background-color: lightgreen;
+}
+
+.locoPanel .pageContent {
+    padding-right: 0.5em;
+}
+
+.locoPanel .speedContainer {
+    margin-top: 1.0em;
+}
+
+.locoPanel hr {
+    margin-top: 1.0em;
+    margin-bottom: 1.0em;
 }
 
 
@@ -578,6 +751,121 @@ a:visited {
 
 .trainEditor .buttons {
     text-align: right;
+}
+
+.trainEditor .buttons button {
+    margin-bottom: 4px;
+}
+
+/*
+ * Function Setup
+ */
+
+.functionSetup .pageContent {
+    padding-right: 6px;
+}
+
+.functionSetup .buttons {
+    margin-bottom: 0.5em;
+}
+
+.functionConfig {
+    display: flex;
+    width: 100%;
+    font-size: large;
+}
+
+.functionConfig .configContainer {
+    flex-grow: 1;
+}
+
+.functionConfig .inputLine {
+    display: flex;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.functionConfig label {
+    display: inline-block;
+    width: 20%;
+}
+
+.functionConfig input {
+    flex-grow: 1;
+    font-size: large;
+}
+
+.functionConfig select {
+    font-size: large;
+}
+
+/*
+ * CV Editor
+ */
+
+ .cvEditor .buttons {
+     margin-top: 1.0em;
+     margin-bottom: 1.0em;
+ }
+
+ .cvEditor .decoderDetails {
+     margin-top: 1.0em;
+     margin-bottom: 1.0em;
+     font-size: large;
+ }
+
+.cv {
+    padding: 2px;
+    margin-top: 2px;
+}
+
+.cv .cvNumber {
+    display: inline-block;
+    width: 2em;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+.cv .cvName {
+    display: inline-block;
+    width: calc(100% - (5.9em + 14px)); /* Sizes of all the other components in a CV row */
+    box-sizing: border-box;
+    padding-left: 1.0em;
+    vertical-align: text-top;
+}
+
+.cv input {
+    width: 3em;
+    margin-left: 6px;
+    margin-right: 6px;
+    box-sizing: border-box;
+}
+
+.cv .led {
+    width: 0.9em;
+    height: 0.9em;
+    margin: 1px;
+    display: inline-block;
+    border-color: rgb(24, 24, 24);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    background-color: gray;
+    transition: background-color 0.2s;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.cv.updating .led {
+    background-color: orange;
+}
+
+.cv.clean .led {
+    background-color: greenyellow;
+}
+
+.cv.dirty .led {
+    background-color: red;
 }
 
 
