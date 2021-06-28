@@ -1,0 +1,49 @@
+input[type="file"] {
+    display: none;
+}
+
+.backupContainer {
+    box-sizing: border-box;
+    padding: 8px 2px 8px 8px;
+    width: 100%;
+}
+
+.backupContainer:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.backupControls {
+    float: right;
+    display: none;
+    margin-top: -7px;
+}
+
+.backupContainer:hover .backupControls{
+    display: unset;
+}
+
+.backupContainer a.linkButton {
+    box-sizing: border-box;
+    min-width: unset;
+    width: 33px;
+    height: 33px;
+    margin-left: 1px;
+    margin-right: 0;
+    padding: 0;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 75%;
+}
+
+a.rename {
+    background-image: url(/icons/rename.svg);
+}
+
+a.restore {
+    background-image: url(/icons/restore.svg);
+}
+
+a.delete {
+    background-image: url(/icons/delete.svg);
+}

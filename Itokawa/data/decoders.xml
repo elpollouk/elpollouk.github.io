@@ -1,4 +1,4 @@
-<decoders>
+<decoders version="1.16">
     <!-- Data from https://www.nmra.org/sites/default/files/standards/sandrp/pdf/s-9.2.2_decoder_cvs_2012.07.pdf -->
     <locoCvNames>
         <cv n="1">Primary Address</cv>
@@ -35,6 +35,34 @@
         <cv n="32">Index Low Byte</cv>
         <cv n="65">Kick Start</cv>
         <cv n="66">Forward Trim</cv>
+        <cv n="67">Speed Table: Step 1</cv>
+        <cv n="68">Speed Table: Step 2</cv>
+        <cv n="69">Speed Table: Step 3</cv>
+        <cv n="70">Speed Table: Step 4</cv>
+        <cv n="71">Speed Table: Step 5</cv>
+        <cv n="72">Speed Table: Step 6</cv>
+        <cv n="73">Speed Table: Step 7</cv>
+        <cv n="74">Speed Table: Step 8</cv>
+        <cv n="75">Speed Table: Step 9</cv>
+        <cv n="76">Speed Table: Step 10</cv>
+        <cv n="77">Speed Table: Step 11</cv>
+        <cv n="78">Speed Table: Step 12</cv>
+        <cv n="79">Speed Table: Step 13</cv>
+        <cv n="80">Speed Table: Step 14</cv>
+        <cv n="81">Speed Table: Step 15</cv>
+        <cv n="82">Speed Table: Step 16</cv>
+        <cv n="83">Speed Table: Step 17</cv>
+        <cv n="84">Speed Table: Step 18</cv>
+        <cv n="85">Speed Table: Step 19</cv>
+        <cv n="86">Speed Table: Step 20</cv>
+        <cv n="87">Speed Table: Step 21</cv>
+        <cv n="88">Speed Table: Step 22</cv>
+        <cv n="89">Speed Table: Step 23</cv>
+        <cv n="90">Speed Table: Step 24</cv>
+        <cv n="91">Speed Table: Step 25</cv>
+        <cv n="92">Speed Table: Step 26</cv>
+        <cv n="93">Speed Table: Step 27</cv>
+        <cv n="94">Speed Table: Step 28</cv>
         <cv n="95">Reverse Trim</cv>
         <cv n="105">User Identifier #1</cv>
         <cv n="106">User Identifier #2</cv>
@@ -219,9 +247,132 @@
             <cvs>1-6,9-19,21-25,27-95,105,106,112-255</cvs>
         </profile>
 
+        <!-- DCCconcepts / RAILS-->
+        <profile man="36" ver="9" name="RAILS CONNECT">
+            <locoCvNames>
+                <cv n="25">Pre-sets for locomotive type</cv>
+                <cv n="33">Forward Light Map</cv>
+                <cv n="34">Reverse Light Map</cv>
+                <cv n="35">Function 1 Map (Green 0-6)</cv>
+                <cv n="36">Function 2 Map (Purple 0-6)</cv>
+                <cv n="37">Function 1 Map (Green 7-12)</cv>
+                <cv n="38">Function 2 Map (Purple7-12)</cv>
+                <cv n="39">Function 3 Map (Brown 0-6)</cv>
+                <cv n="40">Function 4 Map (Pink 0-6)</cv>
+                <cv n="41">Function 3 Map (Brown 7-12)</cv>
+                <cv n="42">Function 4 Map (Pink 7-12)</cv>
+                <cv n="47">Easy Fluorescent Light Effects</cv>
+                <cv n="49">Forward Light Feature (White)</cv>
+                <cv n="50">Reverse Light Feature (Yellow)</cv>
+                <cv n="51">Function 1 Feature (Green)</cv>
+                <cv n="52">Function 2 Feature (Purple)</cv>
+                <cv n="53">Function 3 Feature (Brown)</cv>
+                <cv n="54">Function 4 Feature (Pink)</cv>
+                <cv n="60">Year &amp; Month of Manufacture</cv>
+                <cv n="61">BEMF Button Control</cv>
+                <cv n="62">Auto Stopping sensitivity voltage</cv>
+                <cv n="63">Ditch Light blink rate timer</cv>
+                <cv n="64">Constant dimming level</cv>
+                <cv n="65">Stay alive time</cv>
+                <cv n="66">Motor type</cv>
+                <cv n="112">Mars Min Brightness</cv>
+                <cv n="113">Mars Max Bright Time</cv>
+                <cv n="114">Mars Total Light Cycle</cv>
+                <cv n="115">Mars Mid Brightness</cv>
+                <cv n="116">Mars Max Brightness</cv>
+                <cv n="117">Ditch Light Blink Rate</cv>
+                <cv n="118">Rotary Min Bright</cv>
+                <cv n="119">Rotary Max Bright Time</cv>
+                <cv n="120">Rotary Total Light Cycle</cv>
+                <cv n="121">Rotary Mid Brightness</cv>
+                <cv n="122">Rotary Max Brightness</cv>
+                <cv n="125">Rate 2 Ending Point</cv>
+                <cv n="126">Deceleration Rate 2</cv>
+                <cv n="127">Rate 3 Ending Point</cv>
+                <cv n="128">Deceleration Rate 3</cv>
+                <cv n="129">Rate2 Start Point</cv>
+                <cv n="130">Acceleration Rate 2</cv>
+                <cv n="131">Rate3 Start Point </cv>
+                <cv n="132">Acceleration Rate 3</cv>
+                <cv n="133">Power for Button Control</cv>
+                <cv n="134">Button Control of Motor Circuit</cv>
+                <cv n="135">Random Flicker 1 Adjustment</cv>
+                <cv n="136">BEMF Map</cv>
+                <cv n="140">Single Pulse Strobe off duration</cv>
+                <cv n="141">Single Pulse Strobe on duration</cv>
+                <cv n="144">Flashing light on duration</cv>
+                <cv n="145">Flashing light off duration</cv>
+                <cv n="146">Double Pulse Strobe Long Off</cv>
+                <cv n="147">Double Pulse Strobe Long On</cv>
+                <cv n="148">Double Pulse Strobe Short Off</cv>
+            </locoCvNames>
+            <cvs>1-6,10,13-19,21-25,27,29,33-42,47,49-54,60-94,112-122,125-136,140-141,144-148</cvs>
+        </profile>
+
         <!-- Hornby Decoders -->
-        <profile man="48" ver="131,133" name="R8249/R7150">
+        <profile man="48" ver="131,133,135" name="R8249/R7150/R7274">
             <cvs>1,3,4,10,17,18,29</cvs>
+        </profile>
+
+        <profile man="48" ver="14" name="TTS Decoder">
+            <locoCvNames>
+                <cv n="150">Motor Algorithm 1 &amp; 2</cv>
+                <cv n="151">P1, parameter of Motor Algorithm 1</cv>
+                <cv n="152">I1, parameter of Motor Algorithm 1</cv>
+                <cv n="153">P2, parameter of Motor Algorithm 2</cv>
+                <cv n="154">I2, parameter of Motor Algorithm 2</cv>
+                <cv n="156">Loco ID</cv>
+                <cv n="157">Motor Type</cv>
+                <cv n="158">Decoder Sound Version</cv>
+                <cv n="159">Decoder Sound ID</cv>
+                <cv n="160">Volume Loco Background Steam</cv>
+                <cv n="161">F1 Volume Running</cv>
+                <cv n="162">F2 Volume</cv>
+                <cv n="163">F3 Volume</cv>
+                <cv n="164">F4 Volume</cv>
+                <cv n="165">F5 Volume</cv>
+                <cv n="166">F6 Volume</cv>
+                <cv n="167">F7 Volume</cv>
+                <cv n="168">F8 Volume</cv>
+                <cv n="169">F9 Volume</cv>
+                <cv n="170">F10 Volume</cv>
+                <cv n="171">F11 Volume</cv>
+                <cv n="172">F12 Volume</cv>
+                <cv n="173">F13 Volume</cv>
+                <cv n="174">F14 Volume</cv>
+                <cv n="175">F15 Volume</cv>
+                <cv n="176">F16 Volume</cv>
+                <cv n="177">F1 Volume Decelerating</cv>
+                <cv n="178">F19 Volume</cv>
+                <cv n="179">F20 Volume</cv>
+                <cv n="180">F21 Volume</cv>
+                <cv n="181">F22 Volume</cv>
+                <cv n="182">Quick Set Volume Level</cv>
+                <cv n="201">Loco Start Delay</cv>
+            </locoCvNames>
+            <cvs>1,3,4,10,17,18,29,150-154,156-182,201</cvs>
+        </profile>
+
+        <!-- Gaugemaster -->
+        <profile man="65" ver="51" name="Ruby Decoder DCC90">
+            <locoCvNames>
+                <cv n="9">Motor Frequency SuperSonic</cv>
+                <cv n="33">Function Mapping: F0F</cv>
+                <cv n="34">Function Mapping: F0R</cv>
+                <cv n="35">Function Mapping: F1 (Green)</cv>
+                <cv n="36">Function Mapping: F2 (Violet)</cv>
+                <cv n="49">Forward Light Effect</cv>
+                <cv n="50">Reverse Light Effect</cv>
+                <cv n="51">F1 Effect (Green)</cv>
+                <cv n="52">F2 Effect (Violet)</cv>
+                <cv n="54">Switching Speed and Torque Compensation</cv>
+                <cv n="55">BEMF: Static Compensation</cv>
+                <cv n="56">BEMF: Dynamic Compensation</cv>
+                <cv n="57">BEMF: Speed Stabilisation-Droop</cv>
+                <cv n="62">FX Rate and PowerPal Adjust</cv>
+                <cv n="63">Ditch Light Blink Hold Time</cv>
+            </locoCvNames>
+            <cvs>1-6,9,15-19,21-22,29,33-36,49-52,54-57,62-63,65-95,105-106</cvs>
         </profile>
 
         <!-- Hatton's Decoders -->
@@ -237,7 +388,279 @@
                 <cv n="52">Aux2 Setting</cv>
                 <cv n="61">Self-adjusting Back EMF</cv>
             </locoCvNames>
-            <cvs>1-6,15-18,29,33-36,49-52,61</cvs>
+            <cvs>1-6,10,15-18,29,33-36,49-52,61</cvs>
+        </profile>
+
+        <!-- LaisDCC Decoders -->
+        <profile man="134" ver="1,2,3,4" name="LaisDCC Decoder">
+            <locoCvNames>
+                <cv n="30">Reset (CV30=4)</cv>
+                <cv n="33">Forward Headlight FL(F0F)/White Wire</cv>
+                <cv n="34">Reverse Headlight FL(F0R)/Yellow Wire</cv>
+                <cv n="35">Function 1/Green Wire(0-6)</cv>
+                <cv n="36">Function 2/Purple Wire(0-6)</cv>
+                <cv n="37">Function 1/Green Wire(7-12)</cv>
+                <cv n="38">Function 2/Purple Wire(7-12)</cv>
+                <cv n="39">Function 3/Brown Wire(0-6)</cv>
+                <cv n="40">Function 4/Pink Wire(0-6)</cv>
+                <cv n="41">Function 3/Brown Wire(7-12)</cv>
+                <cv n="42">Function 4/Pink Wire(7-12)</cv>
+                <cv n="43">Function 5/Pink/Purple Wire(0-6)</cv>
+                <cv n="44">Function 6/Green/Brown Wire(0-6)</cv>
+                <cv n="45">Function 5/Pink/Purple Wire(7-12)</cv>
+                <cv n="46">Function 6/Green/Brown Wire(7-12)</cv>
+                <cv n="47">For USER Use</cv>
+                <cv n="48">USER ID #3</cv>
+                <cv n="49">White Wire/FL Feature</cv>
+                <cv n="50">Yellow Wire/RL Feature</cv>
+                <cv n="51">Green Wire/F1 Feature</cv>
+                <cv n="52">Violet Wire/F2 Feature</cv>
+                <cv n="53">Brown Wire/F3 Feature/When Available</cv>
+                <cv n="54">Pink Wire/F4 Feature/When Available</cv>
+                <cv n="56">Dither Frequency</cv>
+                <cv n="57">Dither Ampitude</cv>
+                <cv n="59">Passenger/Coaches Light F0 Control</cv>
+                <cv n="60">Production Location</cv>
+                <cv n="61">Configuration Options</cv>
+                <cv n="62">USER ID #4</cv>
+                <cv n="63">Ditch Light Blink Holad Over</cv>
+                <cv n="64">Dim Value</cv>
+                <cv n="65">USER ID #5</cv>
+                <cv n="66">USER ID #6</cv>
+                <cv n="112">Mars Min Brightness</cv>
+                <cv n="113">Mars Max Brightness Time</cv>
+                <cv n="114">Mars Total Light Cycle</cv>
+                <cv n="115">Mars Mid Brightness</cv>
+                <cv n="116">Mars Max Brightness</cv>
+                <cv n="117">Ditch Light Blink Rate</cv>
+                <cv n="118">Rotary Min. Bright</cv>
+                <cv n="119">Rotary Min. Bright Time</cv>
+                <cv n="120">Rotary Total Light Cycle</cv>
+                <cv n="121">Rotary Mid Brightness</cv>
+                <cv n="122">Rotary Max Brightness</cv>
+                <cv n="123">ON/OFF Rule 17 Dimming</cv>
+                <cv n="124">ON/OFF Ditch Light Blink</cv>
+                <cv n="125">Rate 2 Ending Point</cv>
+                <cv n="126">Dec Rate 2</cv>
+                <cv n="127">Rate 3 Ending Point</cv>
+                <cv n="128">Dec Rate 3</cv>
+                <cv n="129">Rate 2 Starting Point</cv>
+                <cv n="130">Acc. Rate 2</cv>
+                <cv n="131">Rate 3 Starting Point</cv>
+                <cv n="132">Acc. Rate 3</cv>
+                <cv n="133">Power Level for Button Control</cv>
+                <cv n="134">Button Control of Motor Circuit</cv>
+                <cv n="135">Random Flicker Adjust</cv>
+                <cv n="136">BEMF Map</cv>
+                <cv n="137">Production Year (Upper)</cv>
+                <cv n="138">Production Year</cv>
+                <cv n="139">Production Month</cv>
+                <cv n="140">Production Day</cv>
+            </locoCvNames>
+            <cvs>1-6,10,13-19,21-24,29-30,33-54,56-57,59-94,105-106,112-140</cvs>
+        </profile>
+
+        <!-- Zimo Decoders -->
+        <profile man="145" ver="37" name="MX645">
+            <locoCvNames>
+                <cv n="33">Function map F0 forward</cv>
+                <cv n="34">Function map F0 reverse</cv>
+                <cv n="35">Function map F1</cv>
+                <cv n="36">Function map F2</cv>
+                <cv n="37">Function map F3</cv>
+                <cv n="38">Function map F4</cv>
+                <cv n="39">Function map F5</cv>
+                <cv n="40">Function map F6</cv>
+                <cv n="41">Function map F7</cv>
+                <cv n="42">Function map F8</cv>
+                <cv n="43">Function map F9</cv>
+                <cv n="44">Function map F10</cv>
+                <cv n="45">Function map F11</cv>
+                <cv n="46">Function map F12</cv>
+                <cv n="49">HLU acceleration</cv>
+                <cv n="50">HLU deceleration</cv>
+                <cv n="51">HLU speed limit 1</cv>
+                <cv n="52">HLU speed limit 2</cv>
+                <cv n="53">HLU speed limit 3</cv>
+                <cv n="54">HLU speed limit 4</cv>
+                <cv n="55">HLU speed limit 5</cv>
+                <cv n="56">Motor regulation</cv>
+                <cv n="57">Voltage reference</cv>
+                <cv n="58">BEMF intensity</cv>
+                <cv n="59">HLU delay</cv>
+                <cv n="60">Dimming</cv>
+                <cv n="61">ZIMO ext. mapping</cv>
+                <cv n="62">Effects modifications</cv>
+                <cv n="63">Effects modifications</cv>
+                <cv n="64">Effects modifications</cv>
+                <cv n="65">Sub-Version Number</cv>
+                <cv n="107">Light suppression</cv>
+                <cv n="108">Light suppression</cv>
+                <cv n="109">Extension of CV 107</cv>
+                <cv n="110">Extension of CV 108</cv>
+                <cv n="112">Special ZIMO configuration bits</cv>
+                <cv n="113">Compensation</cv>
+                <cv n="114">Dim Mask 1</cv>
+                <cv n="115">Uncoupler control</cv>
+                <cv n="116">Automatic uncouple</cv>
+                <cv n="117">Flasher functions</cv>
+                <cv n="118">Flashing mask</cv>
+                <cv n="119">F6 low beam mask</cv>
+                <cv n="120">F7 low beam mask</cv>
+                <cv n="121">Expon. acceleration</cv>
+                <cv n="122">Expon. deceleration</cv>
+                <cv n="123">Adaptive accel/decel</cv>
+                <cv n="124">Shunting keys, Out-puts instead of SUSI</cv>
+                <cv n="125">Effects F0 front</cv>
+                <cv n="126">Effects F0 rear</cv>
+                <cv n="127">Effects F1</cv>
+                <cv n="128">Effects F2</cv>
+                <cv n="129">Effects F3</cv>
+                <cv n="130">Effects F4</cv>
+                <cv n="131">Effects F5</cv>
+                <cv n="132">Effects F6</cv>
+                <cv n="133">FO4 for exhaust fan</cv>
+                <cv n="134">Asym. stopping (ABC)</cv>
+                <cv n="135">Km/h - Speed</cv>
+                <cv n="136">Km/h – Speed</cv>
+                <cv n="137">Smoke generator characteristic</cv>
+                <cv n="138">Smoke generator characteristic</cv>
+                <cv n="139">Smoke generator characteristic</cv>
+                <cv n="140">Distance controlled stopping</cv>
+                <cv n="141">Distance controlled stopping</cv>
+                <cv n="142">Distance controlled stopping</cv>
+                <cv n="143">Distance controlled stopping</cv>
+                <cv n="144">Programing/Update Lock</cv>
+                <cv n="145">Alternative motor control</cv>
+                <cv n="146">Gear backlash</cv>
+                <cv n="147">Experimental CV</cv>
+                <cv n="151">Motor brake</cv>
+                <cv n="152">Dim Mask 2</cv>
+                <cv n="153">Continue w/o signal</cv>
+                <cv n="154">Special OEM-Bits</cv>
+                <cv n="155">Half-speed key</cv>
+                <cv n="156">Momentum deactivation key</cv>
+                <cv n="157">MAN key</cv>
+                <cv n="158">Several sound bits + RailCom variants</cv>
+                <cv n="159">Effects for F7</cv>
+                <cv n="160">Effects for F8</cv>
+                <cv n="161">Servo Protocol</cv>
+                <cv n="162">Servo 1 left stop</cv>
+                <cv n="163">Servo 1 right stop</cv>
+                <cv n="164">Servo 1 center stop</cv>
+                <cv n="165">Servo 1 speed</cv>
+                <cv n="166">Servo 2 left stop</cv>
+                <cv n="167">Servo 2 right stop</cv>
+                <cv n="168">Servo 2 center stop</cv>
+                <cv n="169">Servo 2 speed</cv>
+                <cv n="170">Servo 3 left stop</cv>
+                <cv n="171">Servo 3 right stop</cv>
+                <cv n="172">Servo 3 center stop</cv>
+                <cv n="173">Servo 3 speed</cv>
+                <cv n="174">Servo 4 left stop</cv>
+                <cv n="175">Servo 4 right stop</cv>
+                <cv n="176">Servo 4 center stop</cv>
+                <cv n="177">Servo 4 speed</cv>
+                <cv n="181">Servo 1</cv>
+                <cv n="182">Servo 2</cv>
+                <cv n="183">Servo 3</cv>
+                <cv n="184">Servo 4</cv>
+                <cv n="185">Special live steam</cv>
+                <cv n="186">Special pantograph configuration 1</cv>
+                <cv n="187">Special pantograph configuration 2</cv>
+                <cv n="188">Special pantograph configuration 3</cv>
+                <cv n="189">Special pantograph configuration 4</cv>
+                <cv n="190">Dimming times with effect 88</cv>
+                <cv n="191">Dimming times with effect 88</cv>
+                <cv n="250">Decoder-ID</cv>
+            </locoCvNames>
+            <cvs>1-6,9-10,13-14,17-19,21-24,27-29,33-46,49-95,105-110,112-147,151-177,181-191,250</cvs>
+        </profile>
+        
+        <!-- ESU Decoders -->
+        <profile man="151" ver="255" name="ESU LokSound 5">
+            <locoCvNames>
+                <cv n="47">Protocol Selection</cv>
+                <cv n="49">Extended Configuration #1</cv>
+                <cv n="50">Analogue mode</cv>
+                <cv n="51">«K Slow» Cutoff</cv>
+                <cv n="52">BEMF Param. «K Slow»</cv>
+                <cv n="53">Control Reference voltage</cv>
+                <cv n="54">Load control Parameter«K»</cv>
+                <cv n="55">Load control Parameter«I»</cv>
+                <cv n="56">BEMF Influence at VMin</cv>
+                <cv n="57">Steam chuff synchronisation #1</cv>
+                <cv n="58">Steam chuff synchronisation #2</cv>
+                <cv n="63">Sound volume «Master»</cv>
+                <cv n="64">Brake sound threshold «Brake On»</cv>
+                <cv n="65">Brake sound threshold «Brake Off»</cv>
+                <cv n="101">Shunting Mode Trim</cv>
+                <cv n="102">Brake Mode Exit Delay</cv>
+                <cv n="103">Load adjustment &quot;Optional Load&quot;</cv>
+                <cv n="104">Load adjustment &quot;Primary Load&quot;</cv>
+                <cv n="111">Gearbox backlash</cv>
+                <cv n="112">Frequency for Flashing light effects</cv>
+                <cv n="113">Power Fail Bypass</cv>
+                <cv n="116">Slow speed BEMF Sampling period</cv>
+                <cv n="117">Full speed BEMF Sampling period</cv>
+                <cv n="118">Slow speed BEMF Measurement gap length VMin</cv>
+                <cv n="119">Full speed BEMF Measurement gap length Vmax</cv>
+                <cv n="123">ABC Mode &quot;Slow drive&quot;</cv>
+                <cv n="124">Extended Configuration #2</cv>
+                <cv n="125">Start voltage Analog DC</cv>
+                <cv n="126">Maximum speed Analog DC</cv>
+                <cv n="127">Start voltage Analog AC</cv>
+                <cv n="128">Maximum speed Analog AC</cv>
+                <cv n="129">Analog Functions &quot;Hysteresis&quot;</cv>
+                <cv n="130">Analog Motor &quot;Hysteresis&quot;</cv>
+                <cv n="132">Grade Crossing Hold Time</cv>
+                <cv n="133">Sound Fader</cv>
+                <cv n="134">ABC-Mode &quot;Sensibility&quot;</cv>
+                <cv n="138">Smoke Unit Trim Fan</cv>
+                <cv n="139">Smoke Unit Trim Temperature</cv>
+                <cv n="140">Smoke TimeOut</cv>
+                <cv n="141">Smoke Chuff Min</cv>
+                <cv n="142">Smoke Chuff max</cv>
+                <cv n="143">Smoke Chuff Length</cv>
+                <cv n="144">Smoke Pre Heat Temperature</cv>
+                <cv n="149">ABC Shuttle Train Holdtimet</cv>
+                <cv n="150">HLU Speedlimit 1</cv>
+                <cv n="151">HLU Speedlimit 2 (U)</cv>
+                <cv n="152">HLU Speedlimit 3</cv>
+                <cv n="153">HLU Speedlimit 4 (L)</cv>
+                <cv n="154">HLU Speedlimit 5</cv>
+                <cv n="155">Sound CV 1</cv>
+                <cv n="156">Sound CV 2</cv>
+                <cv n="157">Sound CV 3</cv>
+                <cv n="158">Sound CV 4</cv>
+                <cv n="159">Sound CV 5</cv>
+                <cv n="160">Sound CV 6</cv>
+                <cv n="161">Sound CV 7</cv>
+                <cv n="162">Sound CV 8</cv>
+                <cv n="163">Sound CV 9</cv>
+                <cv n="164">Sound CV 10</cv>
+                <cv n="165">Sound CV 11</cv>
+                <cv n="166">Sound CV 12</cv>
+                <cv n="167">Sound CV 13</cv>
+                <cv n="168">Sound CV 14</cv>
+                <cv n="169">Sound CV 15</cv>
+                <cv n="170">Sound CV 16</cv>
+                <cv n="179">Brake Function 1 Deceleration</cv>
+                <cv n="180">Brake Function 2 Deceleration</cv>
+                <cv n="181">Brake Function 3 Deceleration</cv>
+                <cv n="182">Brake Function 1 max. Speed</cv>
+                <cv n="183">Brake Function 2 max. Speed</cv>
+                <cv n="184">Brake Function 3 max. Speed</cv>
+                <cv n="246">Automatic decoupling Driving speed</cv>
+                <cv n="247">Decoupling - Removing time</cv>
+                <cv n="248">Decoupling - Pushing time</cv>
+                <cv n="249">Minimum steam chuff distance</cv>
+                <cv n="250">Secondary steam chuff trigger</cv>
+                <cv n="253">Constant brake mode</cv>
+                <cv n="254">Constant braking distance forward</cv>
+                <cv n="255">Constant braking distance backward</cv>
+            </locoCvNames>
+            <cvs>1-6,9,13-19,21-24,27-29,31-32,47,49-58,63-95,101-106,111-113,116-119,123-130,132-134,138-144,149-170,179-184,246-250,253-255</cvs>
         </profile>
 
         <!-- Test Decoders -->

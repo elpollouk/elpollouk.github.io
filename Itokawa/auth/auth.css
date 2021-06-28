@@ -1,0 +1,16 @@
+.formRow {
+    margin: 5px;
+    text-align: center;
+}
+
+label > span {
+    display: inline-block;
+    width: 6em;
+    text-align: left;
+}
+
+input[type=submit] {
+    width: calc(25% - 4px);
+    height: 2.5em;
+    font-size: large;
+}

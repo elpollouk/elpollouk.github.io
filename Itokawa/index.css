@@ -163,6 +163,10 @@ a:visited {
  *     .led margin * 2 (2px)
  *     .led height 1.5m
  */
+.popout #statusBar {
+    display: none;
+}
+
 #statusBar {
     position: absolute;
     left: 50%;
@@ -188,11 +192,27 @@ a:visited {
 
 .globalControls {
     margin-top: 1em;
-    margin-bottom: 1em;
+    margin-bottom: calc(1em - 3px);
+}
+
+.globalControls > div {
+    margin-bottom: 3px;
 }
 
 .globalControls button {
-    width: calc(25% - 4px);;
+    width: calc(25% - 4px);
+}
+
+.globalControls .estop {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: calc(100% - 4px);
+}
+
+.globalControls .estop:active {
+    background-color: darkred;
 }
 
 /* Back button */
@@ -396,6 +416,11 @@ a:visited {
  *     .led margin * 2 (2px)
  *     .led height 1.5m
  */
+.popout #contentParent {
+    margin-top: 0px;
+    height: 100vh;
+}
+
 #contentParent {
     overflow: hidden;
     margin-top: calc(10px + 1.5em);
@@ -450,27 +475,6 @@ a:visited {
 
 .noTrains .noTrainsContainer {
     display: unset;
-}
-
-.emergencyStop {
-    padding: 1em;
-}
-
-.emergencyStop button {
-    width: calc(100% - 4px);
-    height: 4em;
-    background-color: red;
-    color: white;
-    font-weight: bold;
-    font-size: x-large;
-}
-
-.emergencyStop button:active {
-    background-color: darkred;
-}
-
-.noTrains .emergencyStop, .loading .emergencyStop {
-    display: none;
 }
 
 
