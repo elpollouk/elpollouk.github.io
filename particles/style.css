@@ -31,11 +31,11 @@ body.displayControls #controls {
     display: block;
 }
 
-body:not(.fullscreen) #goFullscreen, #goFullscreen:hover {
+body:not(.fullscreen) #goFullscreen {
     display: inline-block;
 }
 
-body.fullscreen #exitFullscreen, #exitFullscreen:hover {
+body.fullscreen #exitFullscreen {
     display: inline-block;
 }
 

@@ -22,7 +22,7 @@ const WELL_MARGIN = 150;
 const WELL_STRENGTH_MIN = 0.05 * 100;
 const WELL_STRENGTH_MAX = 0.2 * 100;
 
-const VISUAL_ECHO = 0.6;
+const VISUAL_ECHO = 0.8;
 
 const colours = ["red", "green", "blue", "yellow", "cyan", "magenta", "orange", "purple", "lime"];
 let nextColourIndex = 0;
@@ -54,10 +54,9 @@ function update() {
             const dx = w[WELL_X] - p[PARTICLE_X];
             const dy = w[WELL_Y] - p[PARTICLE_Y];
             const r2 = dx * dx + dy * dy;
-            const r = Math.sqrt(r2);
-            const f = w[WELL_STRENGTH] / r2;
-            p[PARTICLE_VX] += f * dx;
-            p[PARTICLE_VY] += f * dy;
+            const g = w[WELL_STRENGTH] / r2;
+            p[PARTICLE_VX] += g * dx;
+            p[PARTICLE_VY] += g * dy;
         }
 
         p[PARTICLE_OLD_X] = p[PARTICLE_X];
@@ -97,7 +96,6 @@ function trailSegment(x1, y1, x2, y2, radius, colour) {
 
     ctx.fillStyle = colour;
     ctx.fill();
-    
     ctx.restore();
 }
 
