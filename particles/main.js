@@ -14,7 +14,7 @@ const WELL_X = 0;
 const WELL_Y = 1;
 const WELL_STRENGTH = 2;
 
-const NUM_PARTICLES = 20;
+const NUM_PARTICLES = 21;
 const PARTICLE_RADIUS = 5;
 const PARTICLE_INITIAL_VELOCITY_RANGE = 2.5;
 const NUM_WELLS = 3;
@@ -24,7 +24,7 @@ const WELL_STRENGTH_MAX = 0.2 * 100;
 
 const VISUAL_ECHO = 0.8;
 
-const colours = ["red", "green", "blue", "yellow", "cyan", "magenta", "orange", "purple", "lime"];
+const colours = ["red", "blue", "yellow", "cyan", "magenta", "orange", "lime"];
 let nextColourIndex = 0;
 
 let renderWells = false;
