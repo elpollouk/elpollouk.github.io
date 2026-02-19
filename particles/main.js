@@ -79,30 +79,6 @@ function respawnParticle(particle) {
     particle[PARTICLE_VY] = vy;
 }
 
-function update() {
-    for (const p of particles) {
-        for (const w of wells) {
-            const dx = w[WELL_X] - p[PARTICLE_X];
-            const dy = w[WELL_Y] - p[PARTICLE_Y];
-            const r2 = dx * dx + dy * dy;
-            // Detect particles that have flown off into the distance and reset them with a new position and velocity
-            if (r2 > PARTICLE_RESET_DISTANCE_SQUARED) {
-                respawnParticle(p);
-            }
-            else {
-                const g = w[WELL_STRENGTH] / r2;
-                p[PARTICLE_VX] += g * dx;
-                p[PARTICLE_VY] += g * dy;
-           }
-        }
-
-        p[PARTICLE_OLD_X] = p[PARTICLE_X];
-        p[PARTICLE_OLD_Y] = p[PARTICLE_Y];
-        p[PARTICLE_X] += p[PARTICLE_VX];
-        p[PARTICLE_Y] += p[PARTICLE_VY];
-    }
-}
-
 function circle(x, y, r, colour) {
     ctx.save();
     ctx.translate(x, y);
@@ -136,6 +112,30 @@ function trailSegment(x1, y1, x2, y2, radius, colour) {
     ctx.restore();
 }
 
+function update() {
+    for (const p of particles) {
+        for (const w of wells) {
+            const dx = w[WELL_X] - p[PARTICLE_X];
+            const dy = w[WELL_Y] - p[PARTICLE_Y];
+            const r2 = dx * dx + dy * dy;
+            // Detect particles that have flown off into the distance and reset them with a new position and velocity
+            if (r2 > PARTICLE_RESET_DISTANCE_SQUARED) {
+                respawnParticle(p);
+            }
+            else {
+                const g = w[WELL_STRENGTH] / r2;
+                p[PARTICLE_VX] += g * dx;
+                p[PARTICLE_VY] += g * dy;
+           }
+        }
+
+        p[PARTICLE_OLD_X] = p[PARTICLE_X];
+        p[PARTICLE_OLD_Y] = p[PARTICLE_Y];
+        p[PARTICLE_X] += p[PARTICLE_VX];
+        p[PARTICLE_Y] += p[PARTICLE_VY];
+    }
+}
+
 function render() {
     ctx.globalAlpha = 1 - VISUAL_ECHO;
     ctx.fillStyle = "black";
@@ -144,7 +144,7 @@ function render() {
 
     if (renderWells) {
         for (const w of wells) {
-            circle(w[WELL_X], w[WELL_Y], w[WELL_STRENGTH], "rgb(48, 48, 48)");
+            circle(w[WELL_X], w[WELL_Y], w[WELL_STRENGTH], draggingWell === w ? "rgb(128, 128, 128)" : "rgb(48, 48, 48)");
         }
     }
 
@@ -157,6 +157,33 @@ function step() {
     update();
     render();
     requestAnimationFrame(step);
+}
+
+let draggingWell = null;
+function onBeginDrag(e) {
+    if (!renderWells) return;
+
+    const mouseX = e.offsetX * (canvas.width / canvas.clientWidth);
+    const mouseY = e.offsetY * (canvas.height / canvas.clientHeight);
+    for (const well of wells) {
+        const dx = well[WELL_X] - mouseX;
+        const dy = well[WELL_Y] - mouseY;
+        if (dx * dx + dy * dy < well[WELL_STRENGTH] * well[WELL_STRENGTH]) {
+            draggingWell = well;
+            break;
+        }
+    }
+}
+
+function onMouseMove(e) {
+    if (draggingWell) {
+        draggingWell[WELL_X] = e.offsetX * (canvas.width / canvas.clientWidth);
+        draggingWell[WELL_Y] = e.offsetY * (canvas.height / canvas.clientHeight);
+    }
+}
+
+function onEndDrag(e) {
+    draggingWell = null;
 }
 
 function enterFullscreen() {
@@ -199,6 +226,7 @@ function initSimulation() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    draggingWell = null;
     wells.length = 0;
     for (let i = 0; i < NUM_WELLS; i++) {
         createWell();
@@ -214,8 +242,8 @@ function bindAction(element, event, action) {
     if (typeof element === "string") {
         element = document.getElementById(element);
     }
-    element.addEventListener(event, () =>{
-        action?.();
+    element.addEventListener(event, (e) =>{
+        action?.(e);
         displayControls();
     });
 }
@@ -230,10 +258,13 @@ function main() {
     bindAction("toggleWells", "click", () => {
         renderWells = !renderWells;
     });
-    bindAction(canvas, "mousemove");
+    bindAction(canvas, "mousemove", onMouseMove);
+    bindAction(canvas, "mousedown", onBeginDrag);
+    bindAction(canvas, "mouseup", onEndDrag);
     bindAction(canvas, "click");
 
     initSimulation();
+    displayControls();
 
     requestAnimationFrame(step);
 }

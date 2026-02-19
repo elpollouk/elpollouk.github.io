@@ -32,6 +32,14 @@ body {
     padding: 0;
 }
 
+body.fullscreen:not(.displayControls) {
+    cursor: none !important;
+}
+
+body.fullscreen.displayControls {
+    cursor: default;
+}
+
 body.displayControls #controls {
     display: block;
 }
