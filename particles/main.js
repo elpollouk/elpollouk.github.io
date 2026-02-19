@@ -2,6 +2,7 @@
 
 (function() {
 
+// Particle data structure: [x, y, oldX, oldY, vx, vy, colour]
 const PARTICLE_X = 0;
 const PARTICLE_Y = 1;
 const PARTICLE_OLD_X = 2;
@@ -10,17 +11,19 @@ const PARTICLE_VX = 4;
 const PARTICLE_VY = 5;
 const PARTICLE_COLOUR = 6;
 
+// Well data structure: [x, y, strength]
 const WELL_X = 0;
 const WELL_Y = 1;
 const WELL_STRENGTH = 2;
 
 const NUM_PARTICLES = 21;
-const PARTICLE_RADIUS = 5;
+const PARTICLE_RADIUS = 6;
 const PARTICLE_INITIAL_VELOCITY_RANGE = 2.5;
+const PARTICLE_RESET_DISTANCE_SQUARED = 10000000;
 const NUM_WELLS = 3;
-const WELL_MARGIN = 150;
-const WELL_STRENGTH_MIN = 0.05 * 100;
-const WELL_STRENGTH_MAX = 0.2 * 100;
+const WELL_MARGIN = 150; // Limits how close wells can be to the edge of the canvas
+const WELL_STRENGTH_MIN = 7;
+const WELL_STRENGTH_MAX = 30;
 
 const VISUAL_ECHO = 0.8;
 
@@ -54,9 +57,20 @@ function update() {
             const dx = w[WELL_X] - p[PARTICLE_X];
             const dy = w[WELL_Y] - p[PARTICLE_Y];
             const r2 = dx * dx + dy * dy;
-            const g = w[WELL_STRENGTH] / r2;
-            p[PARTICLE_VX] += g * dx;
-            p[PARTICLE_VY] += g * dy;
+            // Detect particles that have flown off into the distance and reset them to the center with a new velocity
+            if (r2 > PARTICLE_RESET_DISTANCE_SQUARED) {
+                p[PARTICLE_X] = 0;
+                p[PARTICLE_Y] = 0;
+                p[PARTICLE_OLD_X] = 0;
+                p[PARTICLE_OLD_Y] = 0;
+                p[PARTICLE_VX] = 2;
+                p[PARTICLE_VY] = 2;
+            }
+            else {
+                const g = w[WELL_STRENGTH] / r2;
+                p[PARTICLE_VX] += g * dx;
+                p[PARTICLE_VY] += g * dy;
+           }
         }
 
         p[PARTICLE_OLD_X] = p[PARTICLE_X];
@@ -107,7 +121,7 @@ function render() {
 
     if (renderWells) {
         for (const w of wells) {
-            circle(w[WELL_X], w[WELL_Y], 10, "rgb(64, 64, 64)");
+            circle(w[WELL_X], w[WELL_Y], w[WELL_STRENGTH], "rgb(64, 64, 64)");
         }
     }
 
@@ -125,13 +139,13 @@ function step() {
 function enterFullscreen() {
     document.body.classList.add("fullscreen");
     document.body.requestFullscreen();
-    requestAnimationFrame(initSimulation);
+    setTimeout(initSimulation, 100);
 }
 
 function exitFullscreen() {
     document.body.classList.remove("fullscreen");
     document.exitFullscreen();
-    requestAnimationFrame(initSimulation);
+    setTimeout(initSimulation, 100);
 }
 
 let displayTimeout;
@@ -142,8 +156,22 @@ function displayControls() {
 }
 
 function initSimulation() {
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+    // Set a consitent scale based on the canvas aspect ratio
+    let w = canvas.clientWidth;
+    let h = canvas.clientHeight;
+    if (w < h) {
+        let ratio = w / h;
+        h = 1920;
+        w = h * ratio;
+
+    } else {
+        let ratio = h / w;
+        w = 1920;
+        h = w * ratio;
+    }
+
+    canvas.width = w;
+    canvas.height = h;
 
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
