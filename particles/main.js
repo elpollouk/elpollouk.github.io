@@ -17,7 +17,7 @@ const WELL_X = 0;
 const WELL_Y = 1;
 const WELL_STRENGTH = 2;
 
-const NUM_PARTICLES = 21;
+const PARTICLES_PER_COLOUR = 3;
 const PARTICLE_RADIUS = 6;
 const PARTICLE_INITIAL_VELOCITY_RANGE = 2.5;
 const PARTICLE_RESET_DISTANCE_SQUARED = 10000000;
@@ -25,11 +25,24 @@ const NUM_WELLS = 3;
 const WELL_MARGIN = 150; // Limits how close wells can be to the edge of the canvas
 const WELL_STRENGTH_MIN = 7;
 const WELL_STRENGTH_MAX = 30;
+const DISPAY_CONTROLS_TIMEOUT = 3000;
 
-const VISUAL_ECHO = 0.8;
+const VISUAL_ECHO = 0.85;
 
-const colours = ["red", "blue", "yellow", "cyan", "magenta", "orange", "lime"];
+const COLOURS = ["red", "blue", "yellow", "cyan", "magenta", "orange", "lime"];
 let nextColourIndex = 0;
+
+// Setup 4 respawn points in the corners of the screen, with velocities pointing towards the center
+const RESPAWN_X = 0;
+const RESPAWN_Y = 1;
+const RESPAWN_VX = 2;
+const RESPAWN_VY = 3;
+const RESPANWN_POINTS = [
+    [0, 0,  1,  1],
+    [1, 0, -1,  1],
+    [1, 1, -1, -1],
+    [0, 1,  1, -1]
+]
 
 let renderWells = false;
 const particles = [];
@@ -41,7 +54,7 @@ function createParticle(x, y, vx, vy, colour) {
     y = y || Math.random() * (canvas.height - PARTICLE_RADIUS * 2) + PARTICLE_RADIUS;
     vx = vx ||(Math.random() * PARTICLE_INITIAL_VELOCITY_RANGE * 2) - PARTICLE_INITIAL_VELOCITY_RANGE;
     vy = vy || (Math.random() * PARTICLE_INITIAL_VELOCITY_RANGE * 2) - PARTICLE_INITIAL_VELOCITY_RANGE;
-    colour = colour || colours[nextColourIndex++ % colours.length];
+    colour = colour || COLOURS[nextColourIndex++ % COLOURS.length];
     particles.push([x, y, x, y, vx, vy, colour]);
 }
 
@@ -52,20 +65,29 @@ function createWell(x, y, strength) {
     wells.push([x, y, strength]);
 }
 
+function respawnParticle(particle) {
+    const spawnPoint = RESPANWN_POINTS[Math.floor(Math.random() * RESPANWN_POINTS.length)];
+    const x = spawnPoint[RESPAWN_X] * canvas.width;
+    const y = spawnPoint[RESPAWN_Y] * canvas.height;
+    const vx = spawnPoint[RESPAWN_VX] * (Math.random() * PARTICLE_INITIAL_VELOCITY_RANGE);
+    const vy = spawnPoint[RESPAWN_VY] * (Math.random() * PARTICLE_INITIAL_VELOCITY_RANGE);
+    particle[PARTICLE_X] = x;
+    particle[PARTICLE_Y] = y;
+    particle[PARTICLE_OLD_X] = x;
+    particle[PARTICLE_OLD_Y] = y;
+    particle[PARTICLE_VX] = vx;
+    particle[PARTICLE_VY] = vy;
+}
+
 function update() {
     for (const p of particles) {
         for (const w of wells) {
             const dx = w[WELL_X] - p[PARTICLE_X];
             const dy = w[WELL_Y] - p[PARTICLE_Y];
             const r2 = dx * dx + dy * dy;
-            // Detect particles that have flown off into the distance and reset them to the center with a new velocity
+            // Detect particles that have flown off into the distance and reset them with a new position and velocity
             if (r2 > PARTICLE_RESET_DISTANCE_SQUARED) {
-                p[PARTICLE_X] = 0;
-                p[PARTICLE_Y] = 0;
-                p[PARTICLE_OLD_X] = 0;
-                p[PARTICLE_OLD_Y] = 0;
-                p[PARTICLE_VX] = 2;
-                p[PARTICLE_VY] = 2;
+                respawnParticle(p);
             }
             else {
                 const g = w[WELL_STRENGTH] / r2;
@@ -122,7 +144,7 @@ function render() {
 
     if (renderWells) {
         for (const w of wells) {
-            circle(w[WELL_X], w[WELL_Y], w[WELL_STRENGTH], "rgb(64, 64, 64)");
+            circle(w[WELL_X], w[WELL_Y], w[WELL_STRENGTH], "rgb(48, 48, 48)");
         }
     }
 
@@ -153,7 +175,7 @@ let displayTimeout;
 function displayControls() {
     document.body.classList.add("displayControls");
     clearTimeout(displayTimeout);
-    displayTimeout = setTimeout(() => document.body.classList.remove("displayControls"), 2000);
+    displayTimeout = setTimeout(() => document.body.classList.remove("displayControls"), DISPAY_CONTROLS_TIMEOUT);
 }
 
 function initSimulation() {
@@ -161,12 +183,12 @@ function initSimulation() {
     let w = canvas.clientWidth;
     let h = canvas.clientHeight;
     if (w < h) {
-        let ratio = w / h;
+        const ratio = w / h;
         h = 1920;
         w = h * ratio;
 
     } else {
-        let ratio = h / w;
+        const ratio = h / w;
         w = 1920;
         h = w * ratio;
     }
@@ -183,7 +205,7 @@ function initSimulation() {
     }
 
     particles.length = 0;
-    for (let i = 0; i < NUM_PARTICLES; i++) {
+    for (let i = 0; i < PARTICLES_PER_COLOUR * COLOURS.length; i++) {
         createParticle();
     }
 }
