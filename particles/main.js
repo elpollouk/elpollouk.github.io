@@ -8,7 +8,7 @@ const PARTICLE_OLD_X = 2;
 const PARTICLE_OLD_Y = 3;
 const PARTICLE_VX = 4;
 const PARTICLE_VY = 5;
-const PARTICLE_COLOR = 6;
+const PARTICLE_COLOUR = 6;
 
 const WELL_X = 0;
 const WELL_Y = 1;
@@ -32,13 +32,13 @@ const particles = [];
 const wells = [];
 let canvas, ctx;
 
-function createParticle(x, y, vx, vy, color) {
+function createParticle(x, y, vx, vy, colour) {
     x = x || Math.random() * (canvas.width - PARTICLE_RADIUS * 2) + PARTICLE_RADIUS;
     y = y || Math.random() * (canvas.height - PARTICLE_RADIUS * 2) + PARTICLE_RADIUS;
     vx = vx ||(Math.random() * PARTICLE_INITIAL_VELOCITY_RANGE * 2) - PARTICLE_INITIAL_VELOCITY_RANGE;
     vy = vy || (Math.random() * PARTICLE_INITIAL_VELOCITY_RANGE * 2) - PARTICLE_INITIAL_VELOCITY_RANGE;
-    color = color || colours[nextColourIndex++ % colours.length];
-    particles.push([x, y, x, y, vx, vy, color]);
+    colour = colour || colours[nextColourIndex++ % colours.length];
+    particles.push([x, y, x, y, vx, vy, colour]);
 }
 
 function createWell(x, y, strength) {
@@ -112,7 +112,7 @@ function render() {
     }
 
     for (const p of particles) {
-        trailSegment(p[PARTICLE_OLD_X], p[PARTICLE_OLD_Y], p[PARTICLE_X], p[PARTICLE_Y], PARTICLE_RADIUS, p[PARTICLE_COLOR]);
+        trailSegment(p[PARTICLE_OLD_X], p[PARTICLE_OLD_Y], p[PARTICLE_X], p[PARTICLE_Y], PARTICLE_RADIUS, p[PARTICLE_COLOUR]);
     }
 }
 
