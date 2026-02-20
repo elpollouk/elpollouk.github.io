@@ -25,6 +25,8 @@
     font-family: Arial, sans-serif;
     font-size: 14px;
     padding: 1em;
+
+    animation: fadeOut 0.5s linear;
 }
 
 body {
@@ -42,6 +44,7 @@ body.fullscreen.displayControls {
 
 body.displayControls #controls {
     display: block;
+    animation: fadeIn 0.2s linear;
 }
 
 body:not(.fullscreen) #goFullscreen {
@@ -55,4 +58,38 @@ body.fullscreen #exitFullscreen {
 body.fullscreen #view {
     width: 100vw;
     height: 100vh;
+}
+
+@keyframes fadeIn {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        display: block;
+        opacity: 1;
+    }
+
+    99% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: none;
+        opacity: 0;
+    }
 }

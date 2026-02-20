@@ -26,6 +26,7 @@ const WELL_MARGIN = 150; // Limits how close wells can be to the edge of the can
 const WELL_STRENGTH_MIN = 7;
 const WELL_STRENGTH_MAX = 30;
 const DISPAY_CONTROLS_TIMEOUT = 3000;
+const AUTO_REST_PERIOD = 60000 * 3; // Automatically reset the simulation every 3 minutes to prevent it from stagnating
 
 const VISUAL_ECHO = 0.85;
 
@@ -205,6 +206,7 @@ function displayControls() {
     displayTimeout = setTimeout(() => document.body.classList.remove("displayControls"), DISPAY_CONTROLS_TIMEOUT);
 }
 
+let autoResetTimeout;
 function initSimulation() {
     // Set a consitent scale based on the canvas aspect ratio
     let w = canvas.clientWidth;
@@ -236,6 +238,9 @@ function initSimulation() {
     for (let i = 0; i < PARTICLES_PER_COLOUR * COLOURS.length; i++) {
         createParticle();
     }
+
+    clearTimeout(autoResetTimeout);
+    autoResetTimeout = setTimeout(initSimulation, AUTO_REST_PERIOD);
 }
 
 function bindAction(element, event, action) {
