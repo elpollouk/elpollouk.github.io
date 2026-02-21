@@ -25,7 +25,7 @@ const NUM_WELLS = 3;
 const WELL_MARGIN = 150; // Limits how close wells can be to the edge of the canvas
 const WELL_STRENGTH_MIN = 7;
 const WELL_STRENGTH_MAX = 30;
-const DISPAY_CONTROLS_TIMEOUT = 3000;
+const DISPAY_CONTROLS_TIMEOUT = 5000;
 const AUTO_REST_PERIOD = 60000 * 3; // Automatically reset the simulation every 3 minutes to prevent it from stagnating
 
 const VISUAL_ECHO = 0.85;
@@ -125,7 +125,8 @@ function update() {
             if (r2 > PARTICLE_RESET_DISTANCE_SQUARED) {
                 yeets++;
                 yeetCounter.textContent = yeets;
-                yeetCounter.classList.add("pop");
+
+                popYeetCounter();
                 respawnParticle(p);
             }
             else {
@@ -134,16 +135,6 @@ function update() {
                 p[PARTICLE_VY] += g * dy;
            }
         }
-
-        /*for (const other of particles) {
-            if (other === p) continue;
-            const dx = other[PARTICLE_X] - p[PARTICLE_X];
-            const dy = other[PARTICLE_Y] - p[PARTICLE_Y];
-            const r2 = dx * dx + dy * dy;
-            const g = 5 / r2;
-            p[PARTICLE_VX] += g * dx;
-            p[PARTICLE_VY] += g * dy;
-        }*/
 
         p[PARTICLE_OLD_X] = p[PARTICLE_X];
         p[PARTICLE_OLD_Y] = p[PARTICLE_Y];
@@ -221,6 +212,15 @@ function displayControls() {
     displayTimeout = setTimeout(() => document.body.classList.remove("displayControls"), DISPAY_CONTROLS_TIMEOUT);
 }
 
+let lastPoppedYeets = 0;
+function popYeetCounter() {
+    const now = Date.now();
+    if (lastPoppedYeets + 4200  < now) { // Don't pop the counter more frequently than the animation duration to prevent a race when adding and removing the "pop" class
+        yeetCounter.classList.add("pop");
+        lastPoppedYeets = now;
+    }
+}
+
 let autoResetTimeout;
 function initSimulation() {
     // Set a consitent scale based on the canvas aspect ratio
@@ -277,7 +277,7 @@ function main() {
     bindAction("exitFullscreen", "click", exitFullscreen);
     bindAction("reset", "click", initSimulation);
     bindAction("toggleWells", "click", () => renderWells = !renderWells);
-    bindAction("showScore", "click", () => yeetCounter.classList.add("pop"));
+    bindAction("showScore", "click", popYeetCounter);
     bindAction(canvas, "mousemove", onMouseMove);
     bindAction(canvas, "mousedown", onBeginDrag);
     bindAction(canvas, "mouseup", onEndDrag);
