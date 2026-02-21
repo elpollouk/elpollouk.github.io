@@ -49,6 +49,8 @@ let renderWells = false;
 const particles = [];
 const wells = [];
 let canvas, ctx;
+let yeets = 0;
+let yeetCounter;
 
 function createParticle(x, y, vx, vy, colour) {
     x = x || Math.random() * (canvas.width - PARTICLE_RADIUS * 2) + PARTICLE_RADIUS;
@@ -121,6 +123,9 @@ function update() {
             const r2 = dx * dx + dy * dy;
             // Detect particles that have flown off into the distance and reset them with a new position and velocity
             if (r2 > PARTICLE_RESET_DISTANCE_SQUARED) {
+                yeets++;
+                yeetCounter.textContent = yeets;
+                yeetCounter.classList.add("pop");
                 respawnParticle(p);
             }
             else {
@@ -129,6 +134,16 @@ function update() {
                 p[PARTICLE_VY] += g * dy;
            }
         }
+
+        /*for (const other of particles) {
+            if (other === p) continue;
+            const dx = other[PARTICLE_X] - p[PARTICLE_X];
+            const dy = other[PARTICLE_Y] - p[PARTICLE_Y];
+            const r2 = dx * dx + dy * dy;
+            const g = 5 / r2;
+            p[PARTICLE_VX] += g * dx;
+            p[PARTICLE_VY] += g * dy;
+        }*/
 
         p[PARTICLE_OLD_X] = p[PARTICLE_X];
         p[PARTICLE_OLD_Y] = p[PARTICLE_Y];
@@ -256,13 +271,13 @@ function bindAction(element, event, action) {
 function main() {
     canvas = document.getElementById("view");
     ctx = canvas.getContext("2d");
-
+    yeetCounter = document.getElementById("yeets");
+    yeetCounter.addEventListener("animationend", () => yeetCounter.classList.remove("pop"));
     bindAction("goFullscreen", "click", enterFullscreen);
     bindAction("exitFullscreen", "click", exitFullscreen);
     bindAction("reset", "click", initSimulation);
-    bindAction("toggleWells", "click", () => {
-        renderWells = !renderWells;
-    });
+    bindAction("toggleWells", "click", () => renderWells = !renderWells);
+    bindAction("showScore", "click", () => yeetCounter.classList.add("pop"));
     bindAction(canvas, "mousemove", onMouseMove);
     bindAction(canvas, "mousedown", onBeginDrag);
     bindAction(canvas, "mouseup", onEndDrag);
