@@ -39,14 +39,14 @@
             ]
         },
         "check_cover_and_obscured": {
-            "q": "Do any sight lines from the shooter pass through the same terrain piece more that 1\" from the defender?",
+            "q": "Do any sight lines from the shooter pass through the same terrain piece more that 1\" from the defender (not counting terrain that's connected to the \"Vantage\" terrain peice)?",
             "a": [
                 ["Yes", "check_defenders_choice"],
                 ["No", resolveCoverShot]
             ]
         },
         "check_defenders_choice": {
-            "q": "Does the defender want to benefit from cover or obscured?",
+            "q": "Does the defender want to benefit from cover or obscured (obscured is normally better)?",
             "a": [
                 ["Cover", resolveCoverShot],
                 ["Obscured", resolveObscuredShot]
