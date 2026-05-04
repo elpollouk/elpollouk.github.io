@@ -17,7 +17,7 @@
             ]
         },
         "check_intervening_terrain": {
-            "q": "Can you draw a clear line of sight from any point on the shooting models base to all of the target models base (not counting terrain within 1\" of the shooting model)?",
+            "q": "Can you draw a clear line of sight from any point on the shooting models base to all of the target model's base (not counting terrain within 1\" of the shooting model)?",
             "a": [
                 ["Yes", resolveUnimpededShot],
                 ["No", "check_cover"]
