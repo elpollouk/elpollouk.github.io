@@ -73,7 +73,7 @@
             "q": "You can shoot at the target, but the defender can retain one defence die as a normal success (cover save)."
         },
         "shoot_obscured": {
-            "q": "You can shoot at the target, but must discard one of your success rolls and treat all critical success rolls as normal success rolls (obscured)."
+            "q": "You can shoot at the target, but must discard one success and treat all critical success rolls as normal success rolls (obscured)."
         },
         "shoot_vantage_2": {
             "q": "You can shoot at the target and retain one of your attack dice as a normal success (Accurate 1)."
@@ -91,10 +91,10 @@
             "q": "You can shoot at the target, but the defender can either retain one defence die as a critical success or two dice as normal successes (concealed cover save)."
         },
         "shoot_vantage_obscured_2": {
-            "q": "You can shoot at the target and retain one of your attack dice as a normal success (Accurate 1), but must discard one of your success rolls and treat all critical success rolls as normal success rolls (obscured)."
+            "q": "You can shoot at the target and retain one of your attack dice as a normal success (Accurate 1), but must discard one success and treat all critical success rolls as normal success rolls (obscured)."
         },
         "shoot_vantage_obscured_4": {
-            "q": "You can shoot at the target and retain two of your attack dice as normal successes (Accurate 2), but must discard one of your success rolls and treat all critical rolls as normal success rolls (obscured)."
+            "q": "You can shoot at the target and retain two of your attack dice as normal successes (Accurate 2), but must discard one success and treat all critical rolls as normal success rolls (obscured)."
         },
         "invalid_target": {
             "q": "You cannot shoot at the target."
