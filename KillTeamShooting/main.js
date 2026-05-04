@@ -17,7 +17,7 @@
             ]
         },
         "check_intervening_terrain": {
-            "q": "Can you draw a clear line of sight from any point on the shooting models base to all of the target model's base (not counting terrain within 1\" of the shooting model)?",
+            "q": "Can you draw a clear line of sight from any point on the shooting model's base to all of the target model's base (not counting terrain within 1\" of the shooting model)?",
             "a": [
                 ["Yes", resolveUnimpededShot],
                 ["No", "check_cover"]
@@ -32,7 +32,7 @@
             ]
         },
         "check_concealed": {
-            "q": "Does the target have a concealed order?",
+            "q": "Does the target have a \"Conceal\" order?",
             "a": [
                 ["Yes", (ctx) => (ctx.vantage && ctx.cover === "Light") ? "shoot_vantage_concealed" : "invalid_target"],
                 ["No", (ctx) => ctx.cover === "Heavy" ? "check_cover_and_obscured" : resolveCoverShot(ctx)]
@@ -55,12 +55,12 @@
         "check_obscured": {
             "q": "Is the intervening terrain \"Heavy\"?",
             "a": [
-                ["Yes", (ctx) => ctx.vantage ?"check_connected_heavy_terrain" : resolveObscuredShot(ctx)],
+                ["Yes", (ctx) => ctx.vantage ? "check_connected_heavy_terrain" : resolveObscuredShot(ctx)],
                 ["No", resolveUnimpededShot]
             ],
         },
         "check_connected_heavy_terrain": {
-            "q": "Is the \"Heavy\" terrain connected to the shooter's \"Vantage\" terrain piece?",
+            "q": "Is the \"Heavy\" terrain connected to the shooter's \"Vantage\" terrain feature?",
             "a": [
                 ["Yes", resolveUnimpededShot],
                 ["No", resolveObscuredShot]
@@ -73,28 +73,28 @@
             "q": "You can shoot at the target, but the defender can retain one defence die as a normal success (cover save)."
         },
         "shoot_obscured": {
-            "q": "You can shoot at the target, but must discard one of your success rolls and treat all critical rolls as normal rolls (obscured)."
+            "q": "You can shoot at the target, but must discard one of your success rolls and treat all critical success rolls as normal success rolls (obscured)."
         },
         "shoot_vantage_2": {
             "q": "You can shoot at the target and retain one of your attack dice as a normal success (Accurate 1)."
         },
         "shoot_vantage_4": {
-            "q": "You can shoot at the target and retain two of your attack dice as a normal success (Accurate 2)."
+            "q": "You can shoot at the target and retain two of your attack dice as normal successes (Accurate 2)."
         },
         "shoot_vantage_cover_2": {
             "q": "You can shoot at the target and retain one of your attack dice as a normal success (Accurate 1) and the defender can retain one defence die as a normal success (cover save)."
         },
         "shoot_vantage_cover_4": {
-            "q": "You can shoot at the target and retain two of your attack dice as a normal success (Accurate 2) and the defender can retain one defence die as a normal success (cover save)."
+            "q": "You can shoot at the target and retain two of your attack dice as normal successes (Accurate 2) and the defender can retain one defence die as a normal success (cover save)."
         },
         "shoot_vantage_concealed": {
             "q": "You can shoot at the target, but the defender can either retain one defence die as a critical success or two dice as normal successes (concealed cover save)."
         },
         "shoot_vantage_obscured_2": {
-            "q": "You can shoot at the target and retain one of your attack dice as a normal success (Accurate 1), but must discard one of your success rolls and treat all critical rolls as normal rolls (obscured)."
+            "q": "You can shoot at the target and retain one of your attack dice as a normal success (Accurate 1), but must discard one of your success rolls and treat all critical success rolls as normal success rolls (obscured)."
         },
         "shoot_vantage_obscured_4": {
-            "q": "You can shoot at the target and retain two of your attack dice as a normal success (Accurate 2), but must discard one of your success rolls and treat all critical rolls as normal rolls (obscured)."
+            "q": "You can shoot at the target and retain two of your attack dice as normal successes (Accurate 2), but must discard one of your success rolls and treat all critical rolls as normal success rolls (obscured)."
         },
         "invalid_target": {
             "q": "You cannot shoot at the target."
