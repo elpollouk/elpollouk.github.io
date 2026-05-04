@@ -55,7 +55,7 @@
         "check_obscured": {
             "q": "Is the intervening terrain \"Heavy\"?",
             "a": [
-                ["Yes", "check_connected_heavy_terrain"],
+                ["Yes", (ctx) => ctx.vantage ?"check_connected_heavy_terrain" : resolveObscuredShot(ctx)],
                 ["No", resolveUnimpededShot]
             ],
         },
