@@ -17,7 +17,7 @@
             ]
         },
         "check_intervening_terrain": {
-            "q": "Can you draw a clear line of sight from any point on the shooting models base to any part of the target models base (not counting terrain within 1\" of the shooting model)?",
+            "q": "Can you draw a clear line of sight from any point on the shooting models base to all of the target models base (not counting terrain within 1\" of the shooting model)?",
             "a": [
                 ["Yes", resolveUnimpededShot],
                 ["No", "check_cover"]
@@ -136,12 +136,6 @@
         return "shoot_obscured";
     }
 
-    function answer(ans, next, targetElement) {
-        targetElement.textContent = ans;
-        if (typeof next === "function") next = next(context);
-        ask(next);
-    }
-
     function ask(question) {
         const q = questions[question];
         const container = document.createElement("div");
@@ -173,6 +167,11 @@
         document.getElementById("questions").appendChild(container);;
     }
 
+    function answer(ans, next, targetElement) {
+        targetElement.textContent = ans;
+        if (typeof next === "function") next = next(context);
+        ask(next);
+    }
 
     function reset() {
         document.getElementById("questions").innerHTML = "";
