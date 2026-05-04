@@ -1,0 +1,11 @@
+body {
+    text-align: center;
+}
+
+.question {
+    margin-bottom: 0.5em;
+}
+.answer {
+    width: 7em;
+    margin: 0.25em;
+}
