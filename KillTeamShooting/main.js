@@ -11,8 +11,8 @@
         "check_vantage": {
             "q": "Is the shooting model on \"Vantage\" terrain?",
             "a": [
-                ["Yes: 2\" above target", (ctx) => { ctx.vantage = 2; return "check_intervening_terrain"; }],
-                ["Yes: 4\" above target", (ctx) => { ctx.vantage = 4; return "check_intervening_terrain"; }],
+                ["Yes: 2\" above target", (ctx) => { ctx.set("vantage", 2); return "check_intervening_terrain"; }],
+                ["Yes: 4\" above target", (ctx) => { ctx.set("vantage", 4); return "check_intervening_terrain"; }],
                 ["No", "check_intervening_terrain"]
             ]
         },
@@ -26,8 +26,8 @@
         "check_cover": {
             "q": "Is the intervening terrain within 1\" of the target model?",
             "a": [
-                ["Yes: Light", (ctx) => { ctx.cover = "Light"; return "check_concealed"; }],
-                ["Yes: Heavy", (ctx) => { ctx.cover = "Heavy"; return "check_concealed"; }],
+                ["Yes: Light", (ctx) => { ctx.set("cover", "Light"); return "check_concealed"; }],
+                ["Yes: Heavy", (ctx) => { ctx.set("cover", "Heavy"); return "check_concealed"; }],
                 ["No", (ctx) => "check_obscured"]
             ]
         },
@@ -105,7 +105,21 @@
 
     function newContext() {
         return {
-
+            _history: [],
+            set: function (key, value) {
+                this._history.at(-1).unshift([key, this[key]])
+                this[key] = value;
+                return this;
+            },
+            undo: function () {
+                const last = this._history.pop();
+                for (const [key, value] of last) {
+                    this[key] = value;
+                }
+            },
+            newEpoch: function () {
+                this._history.push([]);
+            }
         };
     }
 
@@ -136,7 +150,42 @@
         return "shoot_obscured";
     }
 
+    function buildAnswersFromContext() {
+        context.answersElement.innerHTML = "";
+
+        (context.question.a || []).forEach(([ans, next]) => {
+            const answerElement = document.createElement("button");
+            answerElement.textContent = ans;
+            answerElement.classList.add("answer");
+            answerElement.addEventListener("click", () => {
+                answer(ans, next);
+            });
+
+            context.answersElement.appendChild(answerElement);
+        });
+
+        if (context.question.a) {
+            context.answersElement.appendChild(document.createElement("br"));
+        }
+
+        if (context._history.length > 1) {
+            const _undo = document.createElement("button");
+            _undo.textContent = "Undo";
+            _undo.classList.add("answer");
+            _undo.addEventListener("click", undo);
+            context.answersElement.appendChild(_undo);
+        }
+
+        const _reset = document.createElement("button");
+        _reset.textContent = "Reset";
+        _reset.classList.add("answer");
+        _reset.addEventListener("click", reset);
+        context.answersElement.appendChild(_reset);
+    }
+
     function ask(question) {
+        context.newEpoch();
+
         const q = questions[question];
         const container = document.createElement("div");
         container.classList.add("question");
@@ -146,31 +195,34 @@
         const answersElement = document.createElement("div");
         answersElement.classList.add("answers");
 
-        (q.a || []).forEach(([ans, next]) => {
-            const answerElement = document.createElement("button");
-            answerElement.textContent = ans;
-            answerElement.classList.add("answer");
-            answersElement.appendChild(answerElement);
-            answerElement.addEventListener("click", () => {
-                answer(ans, next, answersElement);
-            });
-        });
-
-        const _reset = document.createElement("button");
-        _reset.textContent = "Reset";
-        _reset.classList.add("answer");
-        _reset.addEventListener("click", reset);
-        answersElement.appendChild(_reset);
-
         container.appendChild(questionElement);
         container.appendChild(answersElement);
-        document.getElementById("questions").appendChild(container);;
+        document.getElementById("questions").appendChild(container);
+
+        if (!q.a) {
+            questionElement.classList.add("final");
+        }
+
+        context.set("question", q)
+               .set("containerElement", container)
+               .set("answersElement", answersElement);
+
+        buildAnswersFromContext();
     }
 
-    function answer(ans, next, targetElement) {
-        targetElement.textContent = ans;
+    function answer(ans, next) {
+        const text = document.createElement("span");
+        text.textContent = ans;
+        context.answersElement.innerHTML = "";
+        context.answersElement.appendChild(text);
         if (typeof next === "function") next = next(context);
         ask(next);
+    }
+
+    function undo() {
+        context.containerElement.parentNode.removeChild(context.containerElement)
+        context.undo();
+        buildAnswersFromContext();
     }
 
     function reset() {

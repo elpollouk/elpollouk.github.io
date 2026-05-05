@@ -1,11 +1,36 @@
 body {
     text-align: center;
+    font-family: sans-serif;
+    color: #eee;
+    background-color: #333;
+}
+
+h2 {
+    color: orange;
 }
 
 .question {
-    margin-bottom: 0.5em;
+    margin-bottom: 1em;
 }
+
+.questionText {
+    margin-bottom: 0.5em;
+    text-align: left;
+}
+
+.questionText.final {
+    font-weight: bold;
+    font-size: large;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    color: orange;
+}
+
 .answer {
     width: 7em;
     margin: 0.25em;
+}
+
+.answers span {
+    font-style: italic;
 }
