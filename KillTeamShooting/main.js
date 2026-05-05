@@ -105,7 +105,7 @@
 
     function newContext() {
         return {
-            _history: [],
+            _history: [[]],
             set: function (key, value) {
                 this._history.at(-1).unshift([key, this[key]])
                 this[key] = value;
@@ -184,8 +184,6 @@
     }
 
     function ask(question) {
-        context.newEpoch();
-
         const q = questions[question];
         const container = document.createElement("div");
         container.classList.add("question");
@@ -211,6 +209,7 @@
     }
 
     function answer(ans, next) {
+        context.newEpoch();
         const text = document.createElement("span");
         text.textContent = ans;
         context.answersElement.innerHTML = "";
