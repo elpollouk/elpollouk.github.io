@@ -9,10 +9,17 @@
             ]
         },
         "check_vantage": {
-            "q": "Is the shooting model on \"Vantage\" terrain?",
+            "q": "Is the shooting model on \"Vantage\" terrain relative to the target?",
             "a": [
                 ["Yes: 2\" above target", (ctx) => { ctx.set("vantage", 2); return "check_intervening_terrain"; }],
                 ["Yes: 4\" above target", (ctx) => { ctx.set("vantage", 4); return "check_intervening_terrain"; }],
+                ["No", "check_vantage_defender"],
+            ]
+        },
+        "check_vantage_defender": {
+            "q": "Is the target on \"Vantage\" terrain relative to the shooting model?",
+            "a": [
+                ["Yes", (ctx) => { ctx.set("defenderVantage", true); return "check_intervening_terrain"; }],
                 ["No", "check_intervening_terrain"]
             ]
         },
@@ -55,12 +62,23 @@
         "check_obscured": {
             "q": "Is the intervening terrain \"Heavy\"?",
             "a": [
-                ["Yes", "check_connected_heavy_terrain"],
+                ["Yes", (ctx) => {
+                    if (ctx.vantage) return "check_connected_heavy_terrain_shooter";
+                    if (ctx.defenderVantage) return "check_connected_heavy_terrain_defender";
+                    return resolveObscuredShot(ctx);
+                }],
                 ["No", resolveUnimpededShot]
             ],
         },
-        "check_connected_heavy_terrain": {
-            "q": "Is the \"Heavy\" terrain connected to the shooter's or target's \"Vantage\" terrain feature?",
+        "check_connected_heavy_terrain_shooter": {
+            "q": "Is the \"Heavy\" terrain connected to the shooter's \"Vantage\" terrain feature?",
+            "a": [
+                ["Yes", resolveUnimpededShot],
+                ["No", resolveObscuredShot]
+            ]
+        },
+        "check_connected_heavy_terrain_defender": {
+            "q": "Is the \"Heavy\" terrain connected to the targets's \"Vantage\" terrain feature?",
             "a": [
                 ["Yes", resolveUnimpededShot],
                 ["No", resolveObscuredShot]
@@ -209,11 +227,12 @@
     }
 
     function answer(ans, next) {
-        context.newEpoch();
         const text = document.createElement("span");
         text.textContent = ans;
         context.answersElement.innerHTML = "";
         context.answersElement.appendChild(text);
+
+        context.newEpoch();
         if (typeof next === "function") next = next(context);
         ask(next);
     }
