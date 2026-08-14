@@ -1,0 +1,31 @@
+body {
+    background-color: darkgreen;
+}
+
+#input-container {
+    color: goldenrod;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+}
+
+#input-container input[type="number"] {
+    width: 3em;
+    margin: 0.5em;
+}
+
+.die {
+    user-select: none;
+    display: inline-block;
+    background-color: darkred;
+    color: goldenrod;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: x-large;
+    margin: 0.5em;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
+    border: 0.2em solid black;
+    border-radius: 20%;
+}
