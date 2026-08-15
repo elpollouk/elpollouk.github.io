@@ -28,4 +28,30 @@ body {
     line-height: 2em;
     border: 0.2em solid black;
     border-radius: 20%;
+    animation: rollIn 0.2s linear;
+}
+
+@keyframes rollIn {
+    0% {
+        transform: /*translate(-50%, -50%)*/ scale(0) rotate(120deg);
+    }
+
+    /*4% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.6) rotate(-20deg);
+    }
+
+    6% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }*/  
+
+    75% {
+        opacity: 1;
+        transform: /*translate(-50%, -50%)*/ scale(1.2) rotate(-30deg);
+    }
+
+    100% {
+        transform: /*translate(-50%, -50%)*/ scale(1) rotate(0deg);
+    }
 }

@@ -1,24 +1,39 @@
 "use strict";
 const NUM_SIDES = 6;
+let timers = [];
 
 function reroll() {
     this.innerText = Math.floor(Math.random() * NUM_SIDES) + 1;
+
+    // Trigger reflow to restart the animation
+    this.style.animation = "none";
+    void this.offsetWidth;
+    this.style.animation = "";
 }
 
-function addDie(value) {
+function addDie(value, delay) {
     const die = document.createElement("div");
     die.className = "die";
     die.innerText = value;
     die.ondblclick = reroll
-    document.getElementById("results").appendChild(die);
+
+    const timer = setTimeout(() => {
+        document.getElementById("results").appendChild(die);
+    }, delay);
+    timers.push(timer);
 }
 
 function rollDice() {
     document.getElementById("results").innerHTML = ""
+    for (let timer of timers) {
+        clearTimeout(timer);
+    }
+    timers = [];
+  
     const numDice = parseInt(document.getElementById("numDice").value);
     for (let i = 0; i < numDice; i++) {
         const dieValue = Math.floor(Math.random() * NUM_SIDES) + 1;
-        addDie(dieValue);
+        addDie(dieValue, i * 100);
     }
 
     window.documentPictureInPicture.requestWindow
