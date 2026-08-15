@@ -41,8 +41,8 @@ function rollDice() {
 
 async function goPip() {
     const pipWindow = await window.documentPictureInPicture.requestWindow({
-        width: 400,
-        height: 300,
+        width: 340,
+        height: 135,
     });
 
     [...document.styleSheets].forEach((styleSheet) => {
